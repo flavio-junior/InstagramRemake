@@ -1,5 +1,4 @@
-#Módulo 14
-(2.0) InstagramApp: UI Avançada
+# InstagramApp: UI Avançada
 
 :warning:Informaçõoes importantes
 * Linguagem de programação utilizada ```Java```
