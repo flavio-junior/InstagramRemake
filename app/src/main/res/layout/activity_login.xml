@@ -26,18 +26,32 @@
                 android:paddingEnd="80dp"
                 android:src="@drawable/instagram_logo_black" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/login_edit_text_email"
-                style="@style/InstaFormEditText"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_edit_text_email_input"
+                style="@style/InstaFormEditTextInput"
+                app:errorTextAppearance="@style/InstaFormEditTextError"
+                app:hintEnabled="false">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/login_edit_text_password"
-                style="@style/InstaFormEditText"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                app:endIconMode="password_toggle" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_edit_text_email"
+                    style="@style/InstaFormEditText"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_edit_text_password_input"
+                style="@style/InstaFormEditTextInput"
+                app:endIconMode="password_toggle"
+                app:errorTextAppearance="@style/InstaFormEditTextError"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_edit_text_password"
+                    style="@style/InstaFormEditText"
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/login_button_enter"
