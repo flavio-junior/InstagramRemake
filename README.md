@@ -4,7 +4,7 @@
 * Linguagem de programação utilizada ```Java```
 * Ferramenta de desenvolvimento utilizada ```Android Studio```
 * Arquitetura do projeto ```MVP```
-* Android ```54.2 | Jelly Bean```
+* Android ```4.2 | Jelly Bean```
 * API ```17```
 
 Permissões do Android Manisfest
