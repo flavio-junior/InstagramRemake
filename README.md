@@ -1,11 +1,11 @@
 # InstagramRemake
 
 :warning:Informaçõoes importantes
-* Linguagem de programação utilizada ```Java``` e ```Kotlin```
+* Linguagem de programação utilizada ```Java```
 * Ferramenta de desenvolvimento utilizada ```Android Studio```
 * Arquitetura do projeto ```MVP```
-* Android ```5.0 | Lollipop```
-* API ```21```
+* Android ```54.2 | Jelly Bean```
+* API ```17```
 
 Permissões do Android Manisfest
  ```
