@@ -14,7 +14,9 @@
 
         <activity android:name=".login.presentation.LoginActivity" />
 
-        <activity android:name=".register.presentation.RegisterActivity">
+        <activity android:name=".register.presentation.RegisterActivity"/>
+
+        <activity android:name=".main.presentation.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
