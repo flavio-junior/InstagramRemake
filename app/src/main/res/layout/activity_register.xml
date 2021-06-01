@@ -18,10 +18,11 @@
 
             <fragment
                 android:id="@+id/register_fragment"
-                android:name="br.com.instagramremake.register.presentation.RegisterEmailFragment"
+                android:name="br.com.instagramremake.register.presentation.RegisterNamePasswordFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:layout="@layout/fragment_register_email" />
+                android:layout_marginTop="24dp"
+                tools:layout="@layout/fragment_register_name_password" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
