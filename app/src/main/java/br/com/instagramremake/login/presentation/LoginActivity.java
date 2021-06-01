@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -14,6 +15,28 @@ import com.google.android.material.textfield.TextInputLayout;
 import br.com.instagramremake.R;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private TestButton buttonEnter;
+
+    private TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().isEmpty())
+                buttonEnter.setEnabled(true);
+            else
+                buttonEnter.setEnabled(false);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +49,13 @@ public class LoginActivity extends AppCompatActivity {
         editTextEmail.addTextChangedListener(watcher);
         editTextPassword.addTextChangedListener(watcher);
 
-        findViewById(R.id.login_button_enter).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonEnter = findViewById(R.id.login_button_enter);
+        buttonEnter.setOnClickListener(v -> {
+            buttonEnter.showProgress(true);
+
+            new Handler().postDelayed(() -> {
+                buttonEnter.showProgress(false);
+
                 TextInputLayout inputLayoutEmail = findViewById(R.id.login_edit_text_email_input);
                 inputLayoutEmail.setError("Esse email é inválido");
                 editTextEmail.setBackground(ContextCompat.getDrawable(LoginActivity.this,
@@ -38,27 +65,8 @@ public class LoginActivity extends AppCompatActivity {
                 inputLayoutPassword.setError("Senha incorreta!");
                 editTextPassword.setBackground(ContextCompat.getDrawable(LoginActivity.this,
                         R.drawable.edit_text_background_error));
-            }
+            }, 4000);
         });
     }
 
-    private TextWatcher watcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!s.toString().isEmpty())
-                findViewById(R.id.login_button_enter).setEnabled(true);
-            else
-                findViewById(R.id.login_button_enter).setEnabled(false);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
 }
