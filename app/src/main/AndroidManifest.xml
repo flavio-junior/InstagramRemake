@@ -12,7 +12,9 @@
         android:theme="@style/Theme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".login.presentation.LoginActivity">
+        <activity android:name=".login.presentation.LoginActivity" />
+
+        <activity android:name=".register.presentation.RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
