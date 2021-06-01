@@ -1,4 +1,4 @@
-package br.com.instagramremake.login.presentation;
+package br.com.instagramremake.common.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

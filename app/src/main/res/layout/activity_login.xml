@@ -53,7 +53,7 @@
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <br.com.instagramremake.login.presentation.LoadingButton
+            <br.com.instagramremake.common.view.LoadingButton
                 android:id="@+id/login_button_enter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
