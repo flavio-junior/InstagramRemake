@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="FormConteiner">
+    <style name="FormContainer">
         <item name="android:layout_marginStart">36dp</item>
         <item name="android:layout_marginEnd">36dp</item>
     </style>
 
-    <style name="InstaFormEditTextInput" parent="FormConteiner">
-        <item name="android:layout_width">match_parent</item>
+    <style name="InstaFormEditTextInput" parent="FormContainer">
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginBottom">20dp</item>
     </style>
 
@@ -18,7 +17,7 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="InstaTextViewBaseForm" parent="FormConteiner">
+    <style name="InstaTextViewBaseForm" parent="FormContainer">
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -36,6 +35,12 @@
         <item name="android:textAlignment">textStart</item>
     </style>
 
+    <style name="InstaTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
     <style name="InstaFormEditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -44,7 +49,25 @@
         <item name="android:background">@drawable/edit_text_background</item>
     </style>
 
-    <style name="InstaFormButton" parent="FormConteiner">
+    <style name="InstaButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/button_background</item>
+    </style>
+
+    <style name="InstaImageViewPost">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
+    <style name="InstaButton.White">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@drawable/button_white_background</item>
+    </style>
+
+    <style name="InstaFormButton" parent="FormContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">16dp</item>
