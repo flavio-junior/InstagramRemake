@@ -12,12 +12,13 @@
         android:theme="@style/Theme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".login.presentation.LoginActivity" />
+        <activity
+            android:name=".main.presentation.MainActivity"
+            android:theme="@style/Theme" />
 
-        <activity android:name=".register.presentation.RegisterActivity"/>
+        <activity android:name=".register.presentation.RegisterActivity" />
 
-        <activity android:name=".main.presentation.MainActivity"
-            android:theme="@style/Theme">
+        <activity android:name=".login.presentation.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
