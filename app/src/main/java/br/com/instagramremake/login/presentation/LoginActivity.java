@@ -17,8 +17,9 @@ import br.com.instagramremake.R;
 import br.com.instagramremake.common.view.AbstractActivity;
 import br.com.instagramremake.common.view.LoadingButton;
 import butterknife.BindView;
+import butterknife.OnClick;
 
-public class LoginActivity extends AbstractActivity implements LoginView {
+public class LoginActivity extends AbstractActivity implements LoginView, TextWatcher {
 
     @BindView(R.id.login_edit_text_email)
     EditText editTextEmail;
@@ -43,20 +44,18 @@ public class LoginActivity extends AbstractActivity implements LoginView {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
         }
 
-        final EditText editTextEmail = findViewById(R.id.login_edit_text_email);
-        final EditText editTextPassword = findViewById(R.id.login_edit_text_password);
+        editTextEmail.addTextChangedListener(this);
+        editTextPassword.addTextChangedListener(this);
+    }
 
-        editTextEmail.addTextChangedListener(watcher);
-        editTextPassword.addTextChangedListener(watcher);
+    @Override
+    public void showProgressBar() {
+        buttonEnter.setEnabled(true);
+    }
 
-        buttonEnter = findViewById(R.id.login_button_enter);
-        buttonEnter.setOnClickListener(v -> {
-            buttonEnter.showProgress(true);
-
-            new Handler().postDelayed(() -> {
-                buttonEnter.showProgress(false);
-            }, 4000);
-        });
+    @Override
+    public void hideProgressBar() {
+        buttonEnter.setEnabled(false);
     }
 
     @Override
@@ -65,6 +64,10 @@ public class LoginActivity extends AbstractActivity implements LoginView {
             inputLayoutEmail.setError(emailError);
             editTextEmail.setBackground(findDrawable(R.drawable.edit_text_background_error));
         }
+        if (passwordError != null) {
+            inputLayoutPassword.setError(passwordError);
+            editTextPassword.setBackground(findDrawable(R.drawable.edit_text_background_error));
+        }
     }
 
     @Override
@@ -72,29 +75,35 @@ public class LoginActivity extends AbstractActivity implements LoginView {
         // TODO: 6/2/2021
     }
 
-    private TextWatcher watcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    @OnClick(R.id.login_button_enter)
+    public void onButtonEnterClick() {
+        buttonEnter.showProgress(true);
 
-        }
+        new Handler().postDelayed(() -> {
+            buttonEnter.showProgress(false);
+        }, 4000);
+    }
 
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!s.toString().isEmpty())
-                buttonEnter.setEnabled(true);
-            else
-                buttonEnter.setEnabled(false);
-        }
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        @Override
-        public void afterTextChanged(Editable s) {
+    }
 
-        }
-    };
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (!s.toString().isEmpty())
+            buttonEnter.setEnabled(true);
+        else
+            buttonEnter.setEnabled(false);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 
     @Override
     protected int getLayout() {
         return R.layout.activity_login;
     }
-
 }
