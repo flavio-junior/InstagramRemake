@@ -1,5 +1,6 @@
 package br.com.instagramremake.common.view;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -24,6 +25,11 @@ public abstract class AbstractActivity extends AppCompatActivity implements View
 
     public Drawable findDrawable(@DrawableRes int drawableId) {
         return Drawables.getDrawable(this, drawableId);
+    }
+
+    @Override
+    public Context getContext() {
+        return getBaseContext();
     }
 
     @Override

@@ -20,8 +20,9 @@ import br.com.instagramremake.login.datasource.LoginDataSource;
 import br.com.instagramremake.login.datasource.LoginLocalDataSource;
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
-public class LoginActivity extends AbstractActivity implements LoginView, TextWatcher {
+public class LoginActivity extends AbstractActivity implements LoginView {
 
     @BindView(R.id.login_edit_text_email)
     EditText editTextEmail;
@@ -45,9 +46,6 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
         }
-
-        editTextEmail.addTextChangedListener(this);
-        editTextPassword.addTextChangedListener(this);
     }
 
     @Override
@@ -88,22 +86,21 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
         presenter.login(editTextEmail.getText().toString(), editTextPassword.getText().toString());
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    @OnTextChanged({R.id.login_edit_text_email, R.id.login_edit_text_password})
+    public void onTextChanged(CharSequence s) {
+        buttonEnter.setEnabled(
+                !editTextEmail.getText().toString().isEmpty() &&
+                        !editTextPassword.getText().toString().isEmpty());
 
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (!s.toString().isEmpty())
-            buttonEnter.setEnabled(true);
-        else
-            buttonEnter.setEnabled(false);
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
+        if (s.hashCode() == editTextEmail.getText().hashCode()) {
+            editTextEmail.setBackground(findDrawable(R.drawable.edit_text_background));
+            inputLayoutEmail.setError(null);
+            inputLayoutEmail.setErrorEnabled(false);
+        } else if (s.hashCode() == editTextPassword.getText().hashCode()) {
+            editTextPassword.setBackground(findDrawable(R.drawable.edit_text_background));
+            inputLayoutPassword.setError(null);
+            inputLayoutPassword.setErrorEnabled(false);
+        }
     }
 
     @Override
