@@ -16,6 +16,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.view.AbstractActivity;
 import br.com.instagramremake.common.view.LoadingButton;
+import br.com.instagramremake.login.datasource.LoginDataSource;
+import br.com.instagramremake.login.datasource.LoginLocalDataSource;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -25,14 +27,14 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
     EditText editTextEmail;
     @BindView(R.id.login_edit_text_password)
     EditText editTextPassword;
-
     @BindView(R.id.login_edit_text_email_input)
     TextInputLayout inputLayoutEmail;
     @BindView(R.id.login_edit_text_password_input)
     TextInputLayout inputLayoutPassword;
-
     @BindView(R.id.login_button_enter)
     LoadingButton buttonEnter;
+
+    LoginPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +51,19 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
     }
 
     @Override
+    protected void onInject() {
+        LoginDataSource dataSource = new LoginLocalDataSource();
+        presenter = new LoginPresenter(this, dataSource);
+    }
+
+    @Override
     public void showProgressBar() {
-        buttonEnter.setEnabled(true);
+        buttonEnter.showProgress(true);
     }
 
     @Override
     public void hideProgressBar() {
-        buttonEnter.setEnabled(false);
+        buttonEnter.showProgress(false);
     }
 
     @Override
@@ -77,11 +85,7 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
 
     @OnClick(R.id.login_button_enter)
     public void onButtonEnterClick() {
-        buttonEnter.showProgress(true);
-
-        new Handler().postDelayed(() -> {
-            buttonEnter.showProgress(false);
-        }, 4000);
+        presenter.login(editTextEmail.getText().toString(), editTextPassword.getText().toString());
     }
 
     @Override
