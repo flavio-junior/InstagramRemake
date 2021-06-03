@@ -18,11 +18,11 @@ public class Database {
     static {
         usersAuth = new HashSet<>();
 
-        usersAuth.add(new UserAuth("user1@gmail.com", "12345"));
-        usersAuth.add(new UserAuth("user2@gmail.com", "123456"));
-        usersAuth.add(new UserAuth("user3@gmail.com", "1234567"));
-        usersAuth.add(new UserAuth("user4@gmail.com", "12345678"));
-        usersAuth.add(new UserAuth("user5@gmail.com", "123456789"));
+        //usersAuth.add(new UserAuth("user1@gmail.com", "12345"));
+        //usersAuth.add(new UserAuth("user2@gmail.com", "123456"));
+        //usersAuth.add(new UserAuth("user3@gmail.com", "1234567"));
+        //usersAuth.add(new UserAuth("user4@gmail.com", "12345678"));
+        //usersAuth.add(new UserAuth("user5@gmail.com", "123456789"));
     }
 
     public static Database getInstance() {
