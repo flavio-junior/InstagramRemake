@@ -18,6 +18,7 @@ import br.com.instagramremake.common.view.AbstractActivity;
 import br.com.instagramremake.common.view.LoadingButton;
 import br.com.instagramremake.login.datasource.LoginDataSource;
 import br.com.instagramremake.login.datasource.LoginLocalDataSource;
+import br.com.instagramremake.main.presentation.MainActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
@@ -78,7 +79,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 
     @Override
     public void onUserLogged() {
-        // TODO: 6/2/2021
+        MainActivity.launch(this);
     }
 
     @OnClick(R.id.login_button_enter)

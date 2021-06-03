@@ -3,6 +3,7 @@ package br.com.instagramremake.login.presentation;
 import android.os.Handler;
 
 import br.com.instagramremake.R;
+import br.com.instagramremake.common.model.UserAuth;
 import br.com.instagramremake.common.presenter.Presenter;
 import br.com.instagramremake.common.util.Strings;
 import br.com.instagramremake.login.datasource.LoginDataSource;
@@ -27,8 +28,8 @@ class LoginPresenter implements Presenter {
     }
 
     @Override
-    public void onSucess() {
-        
+    public void onSucess(UserAuth userAuth) {
+        view.onUserLogged();
     }
 
     @Override
