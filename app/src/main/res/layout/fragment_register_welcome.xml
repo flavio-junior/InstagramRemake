@@ -15,7 +15,7 @@
         android:text="@string/welcome_to_instagram" />
 
     <br.com.instagramremake.common.view.LoadingButton
-        android:id="@+id/register_button_next"
+        android:id="@+id/register_button_next_welcome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:text="@string/next" />

@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".register.presentation.RegisterActivity"
-    tools:showIn="@layout/activity_register">
+    tools:context=".register.presentation.RegisterActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"
@@ -36,14 +35,14 @@
         app:text="@string/next" />
 
     <View
-        android:layout_marginTop="80dp"
         android:id="@+id/divider_bottom"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="80dp"
         android:background="@color/colorPrimaryDark" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/register_text_view_register"
+        android:id="@+id/register_text_view_email_login"
         style="@style/InstaTextViewBase"
         android:layout_width="match_parent"
         android:gravity="center"
