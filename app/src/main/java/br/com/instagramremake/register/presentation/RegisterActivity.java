@@ -2,20 +2,15 @@ package br.com.instagramremake.register.presentation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.view.AbstractActivity;
-import br.com.instagramremake.login.presentation.LoginActivity;
 
 public class RegisterActivity extends AbstractActivity implements RegisterView {
 
@@ -35,13 +30,31 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
     @Override
     protected void onInject() {
         presenter = new RegisterPresenter();
+        presenter.setRegisterView(this);
 
-        RegisterEmailFragment frag = RegisterEmailFragment.newInstance(presenter);
+        showNextView(RegisterSteps.EMAIL);
+    }
+
+    @Override
+    public void showNextView(RegisterSteps step) {
+        Fragment frag = RegisterEmailFragment.newInstance(presenter);
+        switch (step) {
+            case EMAIL:
+
+                break;
+            case NAME_PASSWORD:
+                frag = RegisterNamePasswordFragment.newInstance(presenter);
+                break;
+        }
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
 
-        transaction.add(R.id.register_fragment, frag, "fragment1");
-
+        if (manager.findFragmentById(R.id.register_fragment) == null) {
+            transaction.add(R.id.register_fragment, frag, step.name());
+        } else {
+            transaction.replace(R.id.register_fragment, frag, step.name());
+            transaction.addToBackStack(step.name());
+        }
         transaction.commit();
     }
 
