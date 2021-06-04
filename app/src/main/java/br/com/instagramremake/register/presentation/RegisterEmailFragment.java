@@ -11,7 +11,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public class RegisterEmailFragment extends AbstractFragment implements RegisterView.EmailView {
+public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> implements RegisterView.EmailView {
 
     @BindView(R.id.register_edit_text_email_input)
     TextInputLayout inputLayoutEmail;
@@ -26,8 +26,31 @@ public class RegisterEmailFragment extends AbstractFragment implements RegisterV
 
     }
 
+    public static RegisterEmailFragment newInstance(RegisterPresenter presenter) {
+        RegisterEmailFragment fragment = new RegisterEmailFragment();
+        fragment.setPresenter(presenter);
+        presenter.setEmailView(fragment);
+        return fragment;
+    }
+
+    @Override
+    public void showProgressBar() {
+        buttonNext.showProgress(true);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        buttonNext.showProgress(false);
+    }
+
     @Override
     public void onFailureForm(String emailError) {
+        inputLayoutEmail.setError(emailError);
+        editTextEmail.setBackground(findDrawable(R.drawable.edit_text_background_error));
+    }
+
+    @Override
+    public void showNextView() {
 
     }
 
