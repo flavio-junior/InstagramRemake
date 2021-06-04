@@ -8,7 +8,7 @@ import br.com.instagramremake.common.presenter.Presenter;
 import br.com.instagramremake.common.util.Strings;
 import br.com.instagramremake.login.datasource.LoginDataSource;
 
-class LoginPresenter implements Presenter {
+class LoginPresenter implements Presenter<UserAuth> {
 
     private final LoginView view;
     private final LoginDataSource dataSource;

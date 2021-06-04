@@ -1,10 +1,8 @@
 package br.com.instagramremake.common.presenter;
 
-import br.com.instagramremake.common.model.UserAuth;
+public interface Presenter<T> {
 
-public interface Presenter {
-
-    void onSucess(UserAuth response);
+    void onSucess(T response);
 
     void onError(String message);
 
