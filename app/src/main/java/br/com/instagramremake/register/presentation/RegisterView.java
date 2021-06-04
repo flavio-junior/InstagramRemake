@@ -6,6 +6,8 @@ import br.com.instagramremake.common.view.View;
 
 public interface RegisterView extends View {
 
+    void onUserCreated();
+
     void showNextView(RegisterSteps steps);
 
     interface EmailView {
@@ -27,6 +29,10 @@ public interface RegisterView extends View {
     }
 
     interface WelcomeView {
+
+    }
+
+    interface PhotoView {
 
     }
 
