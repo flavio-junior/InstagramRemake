@@ -21,6 +21,13 @@ Permissões do Android Manisfest:
  <uses-permission android:name="android.permission.CAMERA" />
  ```
  
+ Permissões do Android Image Cropper no Android Manisfest:
+ 
+```
+<activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+  android:theme="@style/Base.Theme.AppCompat"/>
+```
+ 
 Bibliotecas de terceiros:
 
 ```
@@ -30,6 +37,8 @@ implementation 'com.heinrichreimersoftware:material-intro:2.0.0'
 
 implementation 'com.jakewharton:butterknife:10.0.0'
 annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+
+implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 ```
 
  Links úteis:
@@ -37,3 +46,4 @@ annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
  * [Butter Knife](https://github.com/JakeWharton/butterknife)
  * [Picasso](https://github.com/square/picasso)
  * [material-intro](https://github.com/heinrichreimer/material-intro)
+ * [Android Image Cropper](https://github.com/ArthurHub/Android-Image-Cropper)
