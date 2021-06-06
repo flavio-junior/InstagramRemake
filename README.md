@@ -9,7 +9,11 @@
 
 Descrição do Módulo 14, 15, 16, 17 do curso Android Express ministrado pelo instrutor Tiago Aguiar:
 * Módulo 14 | InstagramApp: UI Avançada
-```Descrição do Módulo 14, 15, 16, 17 do curso Android Express```
+* Opção 1  
+* Opção 2  
+ * Opção 3  
+* Opção 4  
+
 * Módulo 15 | InstagramApp: Lógica Avançada
 * Módulo 16 | InstagramApp: Animações Avançadas
 * Módulo 17 | InstagramApp: Ambiente Produção
