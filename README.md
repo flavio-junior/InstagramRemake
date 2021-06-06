@@ -48,6 +48,8 @@ implementation 'com.google.android.material:material:1.3.0'
 
 implementation 'com.heinrichreimersoftware:material-intro:2.0.0'
 
+implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 implementation 'com.jakewharton:butterknife:10.0.0'
 annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
 
@@ -60,3 +62,4 @@ implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
  * [Picasso](https://github.com/square/picasso)
  * [material-intro](https://github.com/heinrichreimer/material-intro)
  * [Android Image Cropper](https://github.com/ArthurHub/Android-Image-Cropper)
+ * [CircleImageView](https://github.com/hdodenhof/CircleImageView)
