@@ -1,4 +1,4 @@
-package br.com.instagramremake.common.view;
+package br.com.instagramremake.common.component;
 
 import android.app.Dialog;
 import android.content.Context;

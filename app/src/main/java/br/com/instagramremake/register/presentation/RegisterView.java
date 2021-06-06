@@ -1,14 +1,19 @@
 package br.com.instagramremake.register.presentation;
 
 import android.content.Context;
+import android.net.Uri;
 
 import br.com.instagramremake.common.view.View;
 
 public interface RegisterView extends View {
 
+    void showNextView(RegisterSteps steps);
+
     void onUserCreated();
 
-    void showNextView(RegisterSteps steps);
+    void showCamera();
+
+    void showGallery();
 
     interface EmailView {
 
@@ -33,7 +38,7 @@ public interface RegisterView extends View {
     }
 
     interface PhotoView {
-
+        void onImageCropped(Uri uri);
     }
 
 }

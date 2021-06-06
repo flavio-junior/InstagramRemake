@@ -91,6 +91,16 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
     }
 
     @Override
+    public void showCamera() {
+
+    }
+
+    @Override
+    public void showGallery() {
+
+    }
+
+    @Override
     protected int getLayout() {
         return R.layout.activity_register;
     }

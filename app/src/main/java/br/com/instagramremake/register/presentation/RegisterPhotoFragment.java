@@ -1,19 +1,15 @@
 package br.com.instagramremake.register.presentation;
 
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.view.AbstractFragment;
-import br.com.instagramremake.common.view.CustomDialog;
-import br.com.instagramremake.common.view.LoadingButton;
+import br.com.instagramremake.common.component.LoadingButton;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -53,6 +49,11 @@ public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> i
         //      .build();
         //
         //      customDialog.show();
+    }
+
+    @Override
+    public void onImageCropped(Uri uri) {
+        
     }
 
     @OnClick(R.id.register_button_photo)

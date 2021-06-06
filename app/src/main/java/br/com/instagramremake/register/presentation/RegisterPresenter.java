@@ -1,5 +1,7 @@
 package br.com.instagramremake.register.presentation;
 
+import android.net.Uri;
+
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.model.UserAuth;
 import br.com.instagramremake.common.presenter.Presenter;
@@ -11,12 +13,13 @@ public class RegisterPresenter implements Presenter<UserAuth> {
     private RegisterView registerView;
     private RegisterView.EmailView emailView;
     private RegisterView.NamePasswordView namePasswordView;
+    private RegisterView.PhotoView photoView;
 
     private final RegisterDataSource datasource;
 
     private String email;
     private String name;
-    private String password;
+    private Uri uri;
 
     public RegisterPresenter(RegisterDataSource dataSource) {
         this.datasource = dataSource;
@@ -34,6 +37,10 @@ public class RegisterPresenter implements Presenter<UserAuth> {
         this.namePasswordView = namePasswordView;
     }
 
+    public void setPhotoView(RegisterView.PhotoView photoView) {
+        this.photoView = photoView;
+    }
+
     public void setEmail(String email) {
         if (!Strings.emailValid(email)) {
             emailView.onFailureForm(emailView.getContext().getString(R.string.invalid_email));
@@ -49,18 +56,30 @@ public class RegisterPresenter implements Presenter<UserAuth> {
             return;
         }
         this.name = name;
-        this.password = password;
 
         namePasswordView.showProgressBar();
-        datasource.createUser(this.name, this.email, this.password, this);
+        datasource.createUser(name, email, password, this);
     }
 
     public String getName() {
         return name;
     }
 
+    public void setUri(Uri uri) {
+        this.uri = uri;
+        photoView.onImageCropped(uri);
+    }
+
     public void showPhotoView() {
         registerView.showNextView(RegisterSteps.PHOTO);
+    }
+
+    public void showCamera() {
+        registerView.showCamera();
+    }
+
+    public void showGallery() {
+        registerView.showGallery();
     }
 
     public void jumpRegistration() {

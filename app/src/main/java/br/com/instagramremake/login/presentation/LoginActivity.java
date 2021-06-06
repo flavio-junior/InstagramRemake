@@ -7,7 +7,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.view.AbstractActivity;
-import br.com.instagramremake.common.view.LoadingButton;
+import br.com.instagramremake.common.component.LoadingButton;
 import br.com.instagramremake.login.datasource.LoginDataSource;
 import br.com.instagramremake.login.datasource.LoginLocalDataSource;
 import br.com.instagramremake.main.presentation.MainActivity;

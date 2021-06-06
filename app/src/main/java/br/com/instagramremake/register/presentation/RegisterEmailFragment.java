@@ -6,7 +6,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.view.AbstractFragment;
-import br.com.instagramremake.common.view.LoadingButton;
+import br.com.instagramremake.common.component.LoadingButton;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;

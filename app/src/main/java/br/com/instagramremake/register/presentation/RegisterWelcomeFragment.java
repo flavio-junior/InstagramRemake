@@ -6,11 +6,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.view.AbstractFragment;
-import br.com.instagramremake.common.view.LoadingButton;
+import br.com.instagramremake.common.component.LoadingButton;
 import butterknife.BindView;
 import butterknife.OnClick;
 
