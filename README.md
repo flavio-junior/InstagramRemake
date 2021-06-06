@@ -7,13 +7,13 @@
 * Android ```4.2 | Jelly Bean```
 * API ```17```
 
-Descrição do Módulo 14, 15, 16, 17 do curso Android Express ministrado pelo instrutor @Tiago Aguiar
+Descrição do Módulo 14, 15, 16, 17 do curso Android Express ministrado pelo instrutor @Tiago Aguiar:
 * Módulo 14 | InstagramApp: UI Avançada
 * Módulo 15 | InstagramApp: Lógica Avançada
 * Módulo 16 | InstagramApp: Animações Avançadas
 * Módulo 17 | InstagramApp: Ambiente Produção
 
-Permissões do Android Manisfest
+Permissões do Android Manisfest:
  ```
  <uses-permission android:name="android.permission.INTERNET" />
  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -21,7 +21,7 @@ Permissões do Android Manisfest
  <uses-permission android:name="android.permission.CAMERA" />
  ```
  
-Bibliotecas de terceiros
+Bibliotecas de terceiros:
 
 ```
 implementation 'com.google.android.material:material:1.3.0'
