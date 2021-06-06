@@ -1,15 +1,26 @@
 package br.com.instagramremake.common.component;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.View;
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -24,6 +35,8 @@ public class MediaHelper {
 
     private Uri mCropImageUri;
     private CropImageView cropImageView;
+    private OnImageCroppedListener listener;
+    private Uri mSavedImageUri;
 
     public static MediaHelper getInstance(Activity activity) {
         if (INSTANCE == null)
@@ -41,7 +54,21 @@ public class MediaHelper {
 
     public MediaHelper cropView(CropImageView cropImageView) {
         this.cropImageView = cropImageView;
-        // TODO: 6/6/2021
+
+        cropImageView.setAspectRatio(1, 1);
+        cropImageView.setFixedAspectRatio(true);
+        cropImageView.setOnCropImageCompleteListener((view, result) -> {
+            Uri uri = result.getUri();
+            if (uri != null && listener != null) {
+                listener.onImageCropped(uri);
+                cropImageView.setVisibility(View.GONE);
+            }
+        });
+        return this;
+    }
+
+    public MediaHelper listener(OnImageCroppedListener listener) {
+        this.listener = listener;
         return this;
     }
 
@@ -56,6 +83,24 @@ public class MediaHelper {
         activity.startActivityForResult(i, GALLERY_CODE);
     }
 
+    public void chooserCamera() {
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (i.resolveActivity(getContext().getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (photoFile != null) {
+                mCropImageUri = FileProvider.getUriForFile(getContext(), "br.com.instagramremake.fileprovider", photoFile);
+                i.putExtra(MediaStore.EXTRA_OUTPUT, mCropImageUri);
+                activity.startActivityForResult(i, CAMERA_CODE);
+            }
+        }
+    }
+
     private void setFragment(Fragment fragment) {
         this.fragment = fragment;
     }
@@ -66,7 +111,16 @@ public class MediaHelper {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_CODE && resultCode == RESULT_OK) {
-
+            if (CropImage.isReadExternalStoragePermissionsRequired(getContext(), mCropImageUri)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (activity != null)
+                        activity.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+                    else
+                        fragment.requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+                }
+            } else {
+                startCropImageActivity();
+            }
         } else if (requestCode == GALLERY_CODE && resultCode == RESULT_OK) {
             mCropImageUri = CropImage.getPickImageResultUri(getContext(), data);
             startCropImageActivity();
@@ -77,4 +131,22 @@ public class MediaHelper {
         cropImageView.setImageUriAsync(mCropImageUri);
     }
 
+    public void cropImage() {
+        File getImage = getContext().getExternalCacheDir();
+        if (getImage != null) {
+            mSavedImageUri = Uri.fromFile(new File(getImage.getPath(), System.currentTimeMillis() + ".jpeg"));
+        }
+        cropImageView.saveCroppedImageAsync(mSavedImageUri);
+    }
+
+    private File createImageFile() throws IOException {
+        String timestemp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timestemp + "_";
+        File storegeDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(imageFileName, ".jpg", storegeDir);
+    }
+
+    public interface OnImageCroppedListener {
+        void onImageCropped(Uri uri);
+    }
 }

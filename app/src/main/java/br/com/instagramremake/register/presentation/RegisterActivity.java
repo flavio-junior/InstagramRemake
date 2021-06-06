@@ -3,6 +3,7 @@ package br.com.instagramremake.register.presentation;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -28,7 +29,7 @@ import br.com.instagramremake.register.datasource.RegisterLocalDataSource;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class RegisterActivity extends AbstractActivity implements RegisterView {
+public class RegisterActivity extends AbstractActivity implements RegisterView, MediaHelper.OnImageCroppedListener {
 
     @BindView(R.id.register_root_container)
     FrameLayout rootContainer;
@@ -97,6 +98,11 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
         transaction.commit();
     }
 
+    @Override
+    public void onImageCropped(Uri uri) {
+        presenter.setUri(uri);
+    }
+
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -113,19 +119,24 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
 
     @Override
     public void showCamera() {
-        // TODO: 6/6/2021
+        MediaHelper.getInstance(this)
+                .cropView(cropImageView)
+                .listener(this)
+                .chooserCamera();
     }
 
     @Override
     public void showGallery() {
         MediaHelper.getInstance(this)
                 .cropView(cropImageView)
+                .listener(this)
                 .chooserGallery();
     }
 
     @OnClick(R.id.register_button_crop)
     public void onButtonCropClick() {
-        // TODO: 6/6/2021  
+        cropViewEnabled(false);
+        MediaHelper.getInstance(this).cropImage();
     }
 
     private void cropViewEnabled(boolean enabled) {

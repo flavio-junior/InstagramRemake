@@ -47,6 +47,7 @@ public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> i
 
     @Override
     public void onImageCropped(Uri uri) {
+        Log.e("Teste", uri.toString());
         try {
             if (getContext() != null && getContext().getContentResolver() != null) {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
