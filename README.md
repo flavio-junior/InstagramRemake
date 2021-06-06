@@ -11,8 +11,8 @@ Descrição do Módulo 14, 15, 16, 17 do curso Android Express ministrado pelo i
 * Módulo 14 | InstagramApp: UI Avançada
 1. Item 1
 2. Item 2
-   1. Item 1
-   2. Item 2
+   . Item 1
+   . Item 2
 3. Item 3
 * Módulo 15 | InstagramApp: Lógica Avançada
 * Módulo 16 | InstagramApp: Animações Avançadas
