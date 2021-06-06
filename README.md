@@ -21,12 +21,25 @@ Permissões do Android Manisfest:
  <uses-permission android:name="android.permission.CAMERA" />
  ```
  
- Permissões do Android Image Cropper no Android Manisfest:
+ Permissões do Android Image Cropper no Android Manifest:
  
 ```
 <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
   android:theme="@style/Base.Theme.AppCompat"/>
 ```
+ 
+ Linhas de implementação adicionadas no Android Manifest:
+ ```
+ <provider
+  android:name="androidx.core.content.FileProvider"
+  android:authorities="br.com.instagramremake.fileprovider"
+  android:exported="false"
+  android:grantUriPermissions="true">
+  <meta-data
+      android:name="android.support.FILE_PROVIDER_PATHS"
+      android:resource="@xml/file_paths" />
+</provider>
+ ```
  
 Bibliotecas de terceiros:
 
