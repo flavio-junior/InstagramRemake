@@ -1,10 +1,14 @@
 package br.com.instagramremake.register.presentation;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -13,17 +17,30 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import br.com.instagramremake.R;
+import br.com.instagramremake.common.component.MediaHelper;
 import br.com.instagramremake.common.view.AbstractActivity;
 import br.com.instagramremake.main.presentation.MainActivity;
 import br.com.instagramremake.register.datasource.RegisterDataSource;
 import br.com.instagramremake.register.datasource.RegisterLocalDataSource;
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class RegisterActivity extends AbstractActivity implements RegisterView {
 
+    @BindView(R.id.register_root_container)
+    FrameLayout rootContainer;
+
     @BindView(R.id.register_scrollView)
     ScrollView scrollView;
+
+    @BindView(R.id.register_crop_image_view)
+    CropImageView cropImageView;
+
+    @BindView(R.id.register_button_crop)
+    Button buttonCrop;
 
     private RegisterPresenter presenter;
 
@@ -50,28 +67,23 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
     @Override
     public void showNextView(RegisterSteps step) {
         Fragment frag = null;
-
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) scrollView.getLayoutParams();
-
         switch (step) {
             case EMAIL:
-                layoutParams.gravity = Gravity.BOTTOM;
                 frag = RegisterEmailFragment.newInstance(presenter);
                 break;
             case NAME_PASSWORD:
-                layoutParams.gravity = Gravity.BOTTOM;
                 frag = RegisterNamePasswordFragment.newInstance(presenter);
                 break;
             case WELCOME:
-                layoutParams.gravity = Gravity.BOTTOM;
                 frag = RegisterWelcomeFragment.newInstance(presenter);
                 break;
             case PHOTO:
+                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) scrollView.getLayoutParams();
                 layoutParams.gravity = Gravity.TOP;
+                scrollView.setLayoutParams(layoutParams);
                 frag = RegisterPhotoFragment.newInstance(presenter);
                 break;
         }
-        scrollView.setLayoutParams(layoutParams);
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -85,6 +97,15 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
         transaction.commit();
     }
 
+    @SuppressLint("MissingSuperCall")
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        cropViewEnabled(true);
+
+        MediaHelper mediaHelper = MediaHelper.getInstance(this);
+        mediaHelper.onActivityResult(requestCode, resultCode, data);
+    }
+
     @Override
     public void onUserCreated() {
         MainActivity.launch(this);
@@ -92,12 +113,26 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
 
     @Override
     public void showCamera() {
-
+        // TODO: 6/6/2021
     }
 
     @Override
     public void showGallery() {
+        MediaHelper.getInstance(this)
+                .cropView(cropImageView)
+                .chooserGallery();
+    }
 
+    @OnClick(R.id.register_button_crop)
+    public void onButtonCropClick() {
+        // TODO: 6/6/2021  
+    }
+
+    private void cropViewEnabled(boolean enabled) {
+        cropImageView.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        scrollView.setVisibility(enabled ? View.GONE : View.VISIBLE);
+        buttonCrop.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        rootContainer.setBackgroundColor(enabled ? findColor(android.R.color.black) : findColor(android.R.color.white));
     }
 
     @Override
