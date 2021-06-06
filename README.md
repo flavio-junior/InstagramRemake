@@ -9,7 +9,14 @@
 
 Descrição do Módulo 14, 15, 16, 17 do curso Android Express ministrado pelo instrutor @Tiago Aguiar:
 * Módulo 14 | InstagramApp: UI Avançada
-+ Módulo 14 | InstagramApp: UI Avançada
++ Create a list by starting a line with `+`, `-`, or `*`
++ Sub-lists are made by indenting 2 spaces:
+  - Marker character change forces new list start:
+    * Ac tristique libero volutpat at
+    + Facilisis in pretium nisl aliquet
+    - Nulla volutpat aliquam velit
++ Very easy!
+
 * Módulo 15 | InstagramApp: Lógica Avançada
 * Módulo 16 | InstagramApp: Animações Avançadas
 * Módulo 17 | InstagramApp: Ambiente Produção
