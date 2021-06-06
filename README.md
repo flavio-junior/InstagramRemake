@@ -12,7 +12,7 @@ Descrição do Módulo 14, 15, 16, 17 do curso Android Express ministrado pelo i
 * Módulo 15 | InstagramApp: Lógica Avançada
 * Módulo 16 | InstagramApp: Animações Avançadas
 * Módulo 17 | InstagramApp: Ambiente Produção
-*  Descrição do Módulo 14, 15, 16, 17 do curso Android Express
+ * Descrição do Módulo 14, 15, 16, 17 do curso Android Express 
 
 Permissões do Android Manisfest
  ```
