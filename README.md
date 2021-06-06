@@ -9,7 +9,7 @@
 
 Descrição do Módulo 14, 15, 16, 17 do curso Android Express ministrado pelo instrutor @Tiago Aguiar:
 * Módulo 14 | InstagramApp: UI Avançada
- - Marker character change forces new list start:
+  - Marker character change forces new list start:
 
 * Módulo 15 | InstagramApp: Lógica Avançada
 * Módulo 16 | InstagramApp: Animações Avançadas
