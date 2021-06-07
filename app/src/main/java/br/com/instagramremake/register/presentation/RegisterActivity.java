@@ -44,6 +44,7 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
     Button buttonCrop;
 
     private RegisterPresenter presenter;
+    private MediaHelper mediaHelper;
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, RegisterActivity.class);
@@ -54,6 +55,10 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStatusBarDark();
+
+        mediaHelper = MediaHelper.getInstance(this)
+                .cropView(cropImageView)
+                .listener(this);
     }
 
     @Override
@@ -103,6 +108,11 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
         presenter.setUri(uri);
     }
 
+    @Override
+    public void onImagePicked(Uri uri) {
+        cropImageView.setImageUriAsync(uri);
+    }
+
     @SuppressLint("MissingSuperCall")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -119,24 +129,18 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 
     @Override
     public void showCamera() {
-        MediaHelper.getInstance(this)
-                .cropView(cropImageView)
-                .listener(this)
-                .chooserCamera();
+        mediaHelper.chooserCamera();
     }
 
     @Override
     public void showGallery() {
-        MediaHelper.getInstance(this)
-                .cropView(cropImageView)
-                .listener(this)
-                .chooserGallery();
+        mediaHelper.chooserCamera();
     }
 
     @OnClick(R.id.register_button_crop)
     public void onButtonCropClick() {
         cropViewEnabled(false);
-        MediaHelper.getInstance(this).cropImage();
+        MediaHelper.getInstance(this).cropImage(cropImageView);
     }
 
     private void cropViewEnabled(boolean enabled) {

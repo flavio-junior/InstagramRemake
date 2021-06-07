@@ -67,6 +67,7 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 
     public void setUri(Uri uri) {
         this.uri = uri;
+        if(photoView != null)
         photoView.onImageCropped(uri);
     }
 
