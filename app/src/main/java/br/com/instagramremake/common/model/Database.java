@@ -1,5 +1,6 @@
 package br.com.instagramremake.common.model;
 
+import android.net.Uri;
 import android.os.Handler;
 
 import java.util.HashSet;
@@ -9,6 +10,7 @@ public class Database {
 
     private static Set<UserAuth> usersAuth;
     private static Set<User> users;
+    private static Set<Uri> storeges;
     private static Database INSTANCE;
 
     private OnSucessListener onSucessListener;
@@ -19,6 +21,7 @@ public class Database {
     static {
         usersAuth = new HashSet<>();
         users = new HashSet<>();
+        storeges = new HashSet<>();
 
         //usersAuth.add(new UserAuth("user1@gmail.com", "12345"));
         //usersAuth.add(new UserAuth("user2@gmail.com", "123456"));
@@ -48,6 +51,20 @@ public class Database {
         return this;
     }
 
+    public Database addPhoto(String uuid, Uri uri) {
+        timeout(() -> {
+            Set<User> users = Database.users;
+            for (User user : users) {
+                if (user.getUuid().equals(uuid)) {
+                    user.setUri(uri);
+                }
+            }
+            storeges.add(uri);
+            onSucessListener.onSucess(true);
+        });
+        return this;
+    }
+
     //insert into user ()
     public Database createUser(String name, String email, String password) {
         timeout(() -> {
@@ -60,6 +77,7 @@ public class Database {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
+            user.setUuid(userAuth.getUUID());
 
             boolean added = users.add(user);
             if (added) {
@@ -91,6 +109,10 @@ public class Database {
             onCompleteListener.onComplete();
         });
         return this;
+    }
+
+    public UserAuth getUser() {
+        return userAuth;
     }
 
     private void timeout(Runnable r) {

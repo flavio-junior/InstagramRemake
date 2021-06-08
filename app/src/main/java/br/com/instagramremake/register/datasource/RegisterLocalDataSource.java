@@ -1,5 +1,7 @@
 package br.com.instagramremake.register.datasource;
 
+import android.net.Uri;
+
 import br.com.instagramremake.common.model.Database;
 import br.com.instagramremake.common.model.UserAuth;
 import br.com.instagramremake.common.presenter.Presenter;
@@ -14,4 +16,10 @@ public class RegisterLocalDataSource implements RegisterDataSource {
                 .addOnCompleteListener(presenter::onComplete);
     }
 
+    @Override
+    public void addPhoto(Uri uri, Presenter presenter) {
+        Database db = Database.getInstance();
+        db.addPhoto(db.getUser().getUUID(), uri)
+                .addOnSucessListener((Database.OnSucessListener<Boolean>) presenter::onSucess);
+    }
 }

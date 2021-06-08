@@ -1,9 +1,13 @@
 package br.com.instagramremake.common.model;
 
+import android.net.Uri;
+
 public class User {
 
+    private String uuid;
     private String email;
     private String password;
+    private Uri uri;
 
     public String getEmail() {
         return email;
@@ -19,6 +23,22 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Uri getUri() {
+        return uri;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
     }
 
     @Override

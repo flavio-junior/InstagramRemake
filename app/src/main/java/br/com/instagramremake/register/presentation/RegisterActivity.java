@@ -134,7 +134,7 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 
     @Override
     public void showGallery() {
-        mediaHelper.chooserCamera();
+        mediaHelper.chooserGallery();
     }
 
     @OnClick(R.id.register_button_crop)
