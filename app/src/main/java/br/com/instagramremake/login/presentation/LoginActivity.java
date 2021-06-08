@@ -6,6 +6,8 @@ import android.widget.EditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import br.com.instagramremake.R;
+import br.com.instagramremake.common.model.Database;
+import br.com.instagramremake.common.model.UserAuth;
 import br.com.instagramremake.common.view.AbstractActivity;
 import br.com.instagramremake.common.component.LoadingButton;
 import br.com.instagramremake.login.datasource.LoginDataSource;
@@ -34,7 +36,12 @@ public class LoginActivity extends AbstractActivity implements LoginView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setStatusBarDark();
+
+        UserAuth user = Database.getInstance().getUser();
+        if (user != null)
+            onUserLogged();
     }
 
     @Override
@@ -68,6 +75,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
     @Override
     public void onUserLogged() {
         MainActivity.launch(this);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @OnClick(R.id.login_button_enter)
