@@ -16,12 +16,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.com.instagramremake.R;
+import br.com.instagramremake.main.presentation.MainActivity;
+import br.com.instagramremake.main.presentation.MainView;
 import br.com.instagramremake.main.profile.presentation.ProfileFragment;
 
 public class HomeFragment extends Fragment {
 
+    private MainView mainView;
+
     public HomeFragment() {
 
+    }
+
+    public static HomeFragment newInstance(MainView mainView) {
+        HomeFragment homeFragment = new HomeFragment();
+        homeFragment.setMainView(mainView);
+        return homeFragment;
+    }
+
+    private void setMainView(MainView mainView) {
+        this.mainView = mainView;
     }
 
     @Override

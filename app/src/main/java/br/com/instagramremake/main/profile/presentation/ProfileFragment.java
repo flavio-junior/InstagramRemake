@@ -15,11 +15,31 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.com.instagramremake.R;
+import br.com.instagramremake.common.view.AbstractFragment;
+import br.com.instagramremake.main.home.presentation.HomeFragment;
+import br.com.instagramremake.main.presentation.MainActivity;
+import br.com.instagramremake.main.presentation.MainView;
+import butterknife.BindView;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends AbstractFragment<ProfilePresenter> {
+
+    private MainView mainView;
+
+    @BindView(R.id.profile_recycler)
+    RecyclerView recyclerView;
 
     public ProfileFragment() {
 
+    }
+
+    public static ProfileFragment newInstance(MainView mainView) {
+        ProfileFragment profileFragment = new ProfileFragment();
+        profileFragment.setMainView(mainView);
+        return profileFragment;
+    }
+
+    private void setMainView(MainView mainView) {
+        this.mainView = mainView;
     }
 
     @Override
@@ -31,12 +51,16 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_profile, container, false);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.profile_recycler);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setAdapter(new PostAdapter());
         return view;
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_main_profile;
     }
 
     @Override

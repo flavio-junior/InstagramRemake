@@ -1,8 +1,10 @@
 package br.com.instagramremake.main.presentation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -11,9 +13,11 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import br.com.instagramremake.R;
@@ -25,7 +29,7 @@ import br.com.instagramremake.main.profile.presentation.ProfileFragment;
 import br.com.instagramremake.main.search.presentation.SearchFragment;
 import br.com.instagramremake.register.presentation.RegisterActivity;
 
-public class MainActivity extends AbstractActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AbstractActivity implements BottomNavigationView.OnNavigationItemSelectedListener, MainView {
 
     public static final String ACT_SOURCE = "act_source";
     public static final int LOGIN_ACTIVITY = 0;
@@ -64,10 +68,10 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     protected void onInject() {
-        homeFragment = new HomeFragment();
+        homeFragment = HomeFragment.newInstance(this);
         searchFragment = new SearchFragment();
         cameraFragment = new CameraFragment();
-        profileFragment = new ProfileFragment();
+        profileFragment = ProfileFragment.newInstance(this);
 
         active = homeFragment;
 
@@ -76,22 +80,43 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         fm.beginTransaction().add(R.id.main_fragment, searchFragment).hide(searchFragment).commit();
         fm.beginTransaction().add(R.id.main_fragment, cameraFragment).hide(cameraFragment).commit();
         fm.beginTransaction().add(R.id.main_fragment, profileFragment).hide(profileFragment).commit();
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        BottomNavigationView bv = findViewById(R.id.main_bottom_nav);
+        bv.setOnNavigationItemSelectedListener(this);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             int source = extras.getInt(ACT_SOURCE);
             if (source == REGISTER_ACTIVITY) {
-                fm.beginTransaction().hide(active).show(profileFragment).commit();
+                getSupportFragmentManager().beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
+                scrollToolbarEnabled(true);
             }
         }
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        BottomNavigationView bv = findViewById(R.id.main_bottom_nav);
-        bv.setOnNavigationItemSelectedListener(this);
+    public void scrollToolbarEnabled(boolean enabled) {
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
+        AppBarLayout appBarLayout = findViewById(R.id.main_appBar);
+
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        CoordinatorLayout.LayoutParams appBarLayoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+
+        if (enabled) {
+            params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+            appBarLayoutParams.setBehavior(new AppBarLayout.Behavior());
+            appBarLayout.setLayoutParams(appBarLayoutParams);
+        } else {
+            params.setScrollFlags(0);
+            appBarLayoutParams.setBehavior(null);
+            appBarLayout.setLayoutParams(appBarLayoutParams);
+        }
     }
 
     @Override
@@ -106,6 +131,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_botton_home:
                 fm.beginTransaction().hide(active).show(homeFragment).commit();
                 active = homeFragment;
+                scrollToolbarEnabled(false);
                 return true;
 
             case R.id.menu_botton_search:
@@ -121,6 +147,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_botton_profile:
                 fm.beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
+                scrollToolbarEnabled(true);
                 return true;
         }
         return false;
