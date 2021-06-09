@@ -6,7 +6,6 @@ public class UserAuth {
     private String password;
 
     public UserAuth() {
-
     }
 
     public UserAuth(String email, String password) {
@@ -51,4 +50,5 @@ public class UserAuth {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
     }
+
 }

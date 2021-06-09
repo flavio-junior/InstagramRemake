@@ -25,7 +25,10 @@ import br.com.instagramremake.common.view.AbstractActivity;
 import br.com.instagramremake.login.presentation.LoginActivity;
 import br.com.instagramremake.main.camera.presentation.CameraFragment;
 import br.com.instagramremake.main.home.presentation.HomeFragment;
+import br.com.instagramremake.main.profile.datasource.ProfileDataSource;
+import br.com.instagramremake.main.profile.datasource.ProfileLocalDataSource;
 import br.com.instagramremake.main.profile.presentation.ProfileFragment;
+import br.com.instagramremake.main.profile.presentation.ProfilePresenter;
 import br.com.instagramremake.main.search.presentation.SearchFragment;
 import br.com.instagramremake.register.presentation.RegisterActivity;
 
@@ -68,10 +71,13 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     protected void onInject() {
+        ProfileDataSource profileDataSource = new ProfileLocalDataSource();
+        ProfilePresenter profilePresenter = new ProfilePresenter(profileDataSource);
+
         homeFragment = HomeFragment.newInstance(this);
         searchFragment = new SearchFragment();
         cameraFragment = new CameraFragment();
-        profileFragment = ProfileFragment.newInstance(this);
+        profileFragment = ProfileFragment.newInstance(this, profilePresenter);
 
         active = homeFragment;
 
@@ -80,6 +86,16 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         fm.beginTransaction().add(R.id.main_fragment, searchFragment).hide(searchFragment).commit();
         fm.beginTransaction().add(R.id.main_fragment, cameraFragment).hide(cameraFragment).commit();
         fm.beginTransaction().add(R.id.main_fragment, profileFragment).hide(profileFragment).commit();
+    }
+
+    @Override
+    public void showProgressBar() {
+        findViewById(R.id.main_progress).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        findViewById(R.id.main_progress).setVisibility(View.GONE);
     }
 
     @Override

@@ -3,6 +3,8 @@ package br.com.instagramremake.common.model;
 import android.net.Uri;
 import android.os.Handler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +13,7 @@ public class Database {
     private static Set<UserAuth> usersAuth;
     private static Set<User> users;
     private static Set<Uri> storeges;
+    private static HashMap<String, HashSet<Post>> posts;
     private static Database INSTANCE;
 
     private OnSucessListener onSucessListener;
@@ -22,6 +25,7 @@ public class Database {
         usersAuth = new HashSet<>();
         users = new HashSet<>();
         storeges = new HashSet<>();
+        posts = new HashMap<>();
 
         //usersAuth.add(new UserAuth("user1@gmail.com", "12345"));
         //usersAuth.add(new UserAuth("user2@gmail.com", "123456"));
@@ -75,6 +79,47 @@ public class Database {
         return this;
     }
 
+    // select * from posts p inner join users u on p.user_id = u.id where u.uuid = ?
+    public Database findPosts(String uuid) {
+        timeout(() -> {
+            HashMap<String, HashSet<Post>> posts = Database.posts;
+            HashSet<Post> res = posts.get(uuid);
+
+            if (res == null)
+                res = new HashSet<>();
+
+            if (onSucessListener != null)
+                onSucessListener.onSucess(new ArrayList<>(res));
+
+            if (onCompleteListener != null)
+                onCompleteListener.onComplete();
+        });
+        return this;
+    }
+
+    // select * from users where uuid = ?
+    public Database findUser(String uuid) {
+        timeout(() -> {
+            Set<User> users = Database.users;
+            User res = null;
+            for (User user : users) {
+                if (user.getUuid().equals(uuid)) {
+                    res = user;
+                    break;
+                }
+            }
+
+            if (onSucessListener != null && res != null) {
+                onSucessListener.onSucess(res);
+            } else if (onFailureListener != null) {
+                onFailureListener.onFailure(new IllegalArgumentException("Usuário não encontrado"));
+            }
+            if (onCompleteListener != null)
+                onCompleteListener.onComplete();
+        });
+        return this;
+    }
+
     public Database addPhoto(String uuid, Uri uri) {
         timeout(() -> {
             Set<User> users = Database.users;
@@ -100,7 +145,7 @@ public class Database {
 
             User user = new User();
             user.setEmail(email);
-            user.setPassword(password);
+            user.setName(name);
             user.setUuid(userAuth.getUUID());
 
             boolean added = users.add(user);
@@ -143,7 +188,7 @@ public class Database {
     }
 
     private void timeout(Runnable r) {
-        new Handler().postDelayed(r, 2000);
+        new Handler().postDelayed(r, 1000);
     }
 
     public interface OnSucessListener<T> {
