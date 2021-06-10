@@ -24,7 +24,10 @@ import br.com.instagramremake.R;
 import br.com.instagramremake.common.view.AbstractActivity;
 import br.com.instagramremake.login.presentation.LoginActivity;
 import br.com.instagramremake.main.camera.presentation.CameraFragment;
+import br.com.instagramremake.main.home.datasource.HomeDataSource;
+import br.com.instagramremake.main.home.datasource.HomeLocalDataSource;
 import br.com.instagramremake.main.home.presentation.HomeFragment;
+import br.com.instagramremake.main.home.presentation.HomePresenter;
 import br.com.instagramremake.main.profile.datasource.ProfileDataSource;
 import br.com.instagramremake.main.profile.datasource.ProfileLocalDataSource;
 import br.com.instagramremake.main.profile.presentation.ProfileFragment;
@@ -37,6 +40,9 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     public static final String ACT_SOURCE = "act_source";
     public static final int LOGIN_ACTIVITY = 0;
     public static final int REGISTER_ACTIVITY = 1;
+
+    private ProfilePresenter profilePresenter;
+    private HomePresenter homePresenter;
 
     Fragment homeFragment;
     Fragment searchFragment;
@@ -71,13 +77,17 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     protected void onInject() {
+        HomeDataSource homeDataSource = new HomeLocalDataSource();
         ProfileDataSource profileDataSource = new ProfileLocalDataSource();
-        ProfilePresenter profilePresenter = new ProfilePresenter(profileDataSource);
 
-        homeFragment = HomeFragment.newInstance(this);
+        homePresenter = new HomePresenter(homeDataSource);
+        profilePresenter = new ProfilePresenter(profileDataSource);
+
+        homeFragment = HomeFragment.newInstance(this, homePresenter);
+        profileFragment = ProfileFragment.newInstance(this, profilePresenter);
+
         searchFragment = new SearchFragment();
         cameraFragment = new CameraFragment();
-        profileFragment = ProfileFragment.newInstance(this, profilePresenter);
 
         active = homeFragment;
 
@@ -112,6 +122,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
                 getSupportFragmentManager().beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
                 scrollToolbarEnabled(true);
+                profilePresenter.findUser();
             }
         }
     }
@@ -147,6 +158,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_botton_home:
                 fm.beginTransaction().hide(active).show(homeFragment).commit();
                 active = homeFragment;
+                homePresenter.findFeed();
                 scrollToolbarEnabled(false);
                 return true;
 
@@ -163,6 +175,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_botton_profile:
                 fm.beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
+                profilePresenter.findUser();
                 scrollToolbarEnabled(true);
                 return true;
         }

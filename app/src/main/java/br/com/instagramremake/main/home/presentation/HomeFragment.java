@@ -15,12 +15,23 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.instagramremake.R;
+import br.com.instagramremake.common.model.Feed;
+import br.com.instagramremake.common.view.AbstractFragment;
 import br.com.instagramremake.main.presentation.MainActivity;
 import br.com.instagramremake.main.presentation.MainView;
 import br.com.instagramremake.main.profile.presentation.ProfileFragment;
+import butterknife.BindView;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends AbstractFragment<HomePresenter> implements MainView.HomeView {
+
+    @BindView(R.id.home_recycler)
+    RecyclerView recyclerView;
+
+    private FeedAdapter feedAdapter;
 
     private MainView mainView;
 
@@ -28,9 +39,11 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public static HomeFragment newInstance(MainView mainView) {
+    public static HomeFragment newInstance(MainView mainView, HomePresenter homePresenter) {
         HomeFragment homeFragment = new HomeFragment();
         homeFragment.setMainView(mainView);
+        homeFragment.setPresenter(homePresenter);
+        homePresenter.setView(homeFragment);
         return homeFragment;
     }
 
@@ -47,12 +60,34 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_home, container, false);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.home_recycler);
+        feedAdapter = new FeedAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new PostAdapter());
+        recyclerView.setAdapter(feedAdapter);
+
         return view;
+    }
+
+    @Override
+    public void showProgressBar() {
+        mainView.showProgressBar();
+    }
+
+    @Override
+    public void hideProgressBar() {
+        mainView.hideProgressBar();
+    }
+
+    @Override
+    public void showFeed(List<Feed> response) {
+        feedAdapter.setFeed(response);
+        feedAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_main_home;
     }
 
     @Override
@@ -70,45 +105,19 @@ public class HomeFragment extends Fragment {
             imagePost = itemView.findViewById(R.id.profile_image_grid);
         }
 
-        public void bind(int image) {
-            this.imagePost.setImageResource(image);
+        public void bind(Feed feed) {
+            // TODO: 6/9/2021
+            this.imagePost.setImageURI(feed.getUri());
         }
     }
 
-    private class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
+    private class FeedAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
-        private int[] images = new int[]{
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-                R.drawable.ic_insta_add,
-        };
+        private List<Feed> feed = new ArrayList<>();
+
+        public void setFeed(List<Feed> feed) {
+            this.feed = feed;
+        }
 
         @NonNull
         @Override
@@ -118,12 +127,12 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull PostViewHolder postViewHolder, int i) {
-            postViewHolder.bind(images[i]);
+            postViewHolder.bind(feed.get(i));
         }
 
         @Override
         public int getItemCount() {
-            return images.length;
+            return feed.size();
         }
     }
 }
