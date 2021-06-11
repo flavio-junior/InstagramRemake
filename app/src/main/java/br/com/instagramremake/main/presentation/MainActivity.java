@@ -23,6 +23,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.view.AbstractActivity;
 import br.com.instagramremake.login.presentation.LoginActivity;
+import br.com.instagramremake.main.camera.presentation.AddActivity;
 import br.com.instagramremake.main.camera.presentation.CameraFragment;
 import br.com.instagramremake.main.home.datasource.HomeDataSource;
 import br.com.instagramremake.main.home.datasource.HomeLocalDataSource;
@@ -46,7 +47,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     Fragment homeFragment;
     Fragment searchFragment;
-    Fragment cameraFragment;
+    //Fragment cameraFragment;
     Fragment profileFragment;
     Fragment active;
 
@@ -87,14 +88,14 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         profileFragment = ProfileFragment.newInstance(this, profilePresenter);
 
         searchFragment = new SearchFragment();
-        cameraFragment = new CameraFragment();
+        //cameraFragment = new CameraFragment();
 
         active = homeFragment;
 
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().add(R.id.main_fragment, homeFragment).hide(homeFragment).commit();
         fm.beginTransaction().add(R.id.main_fragment, searchFragment).hide(searchFragment).commit();
-        fm.beginTransaction().add(R.id.main_fragment, cameraFragment).hide(cameraFragment).commit();
+        //fm.beginTransaction().add(R.id.main_fragment, cameraFragment).hide(cameraFragment).commit();
         fm.beginTransaction().add(R.id.main_fragment, profileFragment).hide(profileFragment).commit();
     }
 
@@ -168,8 +169,9 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
                 return true;
 
             case R.id.menu_botton_add:
-                fm.beginTransaction().hide(active).show(cameraFragment).commit();
-                active = cameraFragment;
+               // fm.beginTransaction().hide(active).show(cameraFragment).commit();
+               // active = cameraFragment;
+                AddActivity.launch(this);
                 return true;
 
             case R.id.menu_botton_profile:
