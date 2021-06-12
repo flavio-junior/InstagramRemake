@@ -79,7 +79,7 @@ public class AddActivity extends AbstractActivity {
 
         TabLayout.Tab tabRight = tabLayout.getTabAt(1);
         if (tabRight != null)
-            tabLeft.setText(getString(R.string.photo));
+            tabRight.setText(getString(R.string.photo));
 
         viewPager.setCurrentItem(adapter.getCount() - 1);
     }
