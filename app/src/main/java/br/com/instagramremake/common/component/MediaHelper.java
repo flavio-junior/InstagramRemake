@@ -6,11 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.content.FileProvider;
@@ -21,6 +26,9 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -178,6 +186,75 @@ public class MediaHelper {
             e.printStackTrace();
         }
         return camera;
+    }
+
+    public void saveCameraFile(byte[] data) {
+        File pictureFile = createCameraFile(true);
+
+        if (pictureFile == null) {
+            Log.d("Teste", "Error createing media file, check storege permission");
+            return;
+        }
+
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+
+            Bitmap realImage = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+            ExifInterface exif = new ExifInterface(pictureFile.toString());
+
+            Log.d("Teste", exif.getAttribute(ExifInterface.TAG_ORIENTATION));
+            if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("6")) {
+                realImage = rotate(realImage, 90);
+            } else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("8")) {
+                realImage = rotate(realImage, 270);
+            } else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("3")) {
+                realImage = rotate(realImage, 180);
+            } else if (exif.getAttribute(ExifInterface.TAG_ORIENTATION).equalsIgnoreCase("0")) {
+                realImage = rotate(realImage, 90);
+            }
+
+            realImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+            fos.close();
+
+            Matrix matrix = new Matrix();
+            File outputMediaFile = createCameraFile(false);
+            if (outputMediaFile == null) {
+                Log.d("Teste", "Error creating media file, check storage permissions");
+                return;
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Bitmap rotate(Bitmap bitmap, int degree) {
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+
+        Matrix matrix = new Matrix();
+        matrix.setRotate(degree);
+
+        return Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
+    }
+
+    private File createCameraFile(boolean temp) {
+        if (getContext() == null) return null;
+
+        File mediaStoregeDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (mediaStoregeDir != null && !mediaStoregeDir.exists()) {
+            if (!mediaStoregeDir.mkdir()) {
+                Log.d("Teste", "failed to create directory");
+                return null;
+            }
+        }
+
+        String timestemp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        return new File(mediaStoregeDir.getPath() + File.separator + (temp ? "TEMP_" : "IMG_" + timestemp + ".jpg"));
     }
 
     public interface OnImageCroppedListener {

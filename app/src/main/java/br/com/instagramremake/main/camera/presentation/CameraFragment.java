@@ -18,6 +18,7 @@ import br.com.instagramremake.R;
 import br.com.instagramremake.common.component.MediaHelper;
 import br.com.instagramremake.common.view.AbstractFragment;
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class CameraFragment extends AbstractFragment {
 
@@ -55,6 +56,24 @@ public class CameraFragment extends AbstractFragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (camera != null)
+            camera.release();
+    }
+
+    @OnClick(R.id.camera_image_view_picture)
+    public void onCameraButtonClick() {
+        progressBar.setVisibility(View.VISIBLE);
+        buttonCamera.setVisibility(View.GONE);
+        camera.takePicture(null, null, (data, camera) -> {
+            mediaHelper.saveCameraFile(data);
+            progressBar.setVisibility(View.GONE);
+            buttonCamera.setVisibility(View.VISIBLE);
+        });
     }
 
     @Override
