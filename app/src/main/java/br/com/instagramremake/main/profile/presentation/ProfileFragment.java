@@ -1,4 +1,4 @@
-package br.com.instagramremake.main.profile.presentation;
+ package br.com.instagramremake.main.profile.presentation;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -89,6 +89,12 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
         recyclerView.setAdapter(postAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.findUser();
     }
 
     @Override

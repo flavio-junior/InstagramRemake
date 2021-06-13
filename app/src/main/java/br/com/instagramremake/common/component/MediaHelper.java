@@ -55,12 +55,20 @@ public class MediaHelper {
             MediaHelper mediaHelper = new MediaHelper();
             INSTANCE = new WeakReference<>(mediaHelper);
             INSTANCE.get().setActivity(activity);
+        } else if (INSTANCE.get() == null) {
+            MediaHelper mediaHelper = new MediaHelper();
+            INSTANCE = new WeakReference<>(mediaHelper);
+            INSTANCE.get().setActivity(activity);
         }
         return INSTANCE.get();
     }
 
     public static MediaHelper getInstance(Fragment fragment) {
         if (INSTANCE == null) {
+            MediaHelper mediaHelper = new MediaHelper();
+            INSTANCE = new WeakReference<>(mediaHelper);
+            INSTANCE.get().setFragment(fragment);
+        } else if (INSTANCE.get() == null) {
             MediaHelper mediaHelper = new MediaHelper();
             INSTANCE = new WeakReference<>(mediaHelper);
             INSTANCE.get().setFragment(fragment);
@@ -188,13 +196,15 @@ public class MediaHelper {
         return camera;
     }
 
-    public void saveCameraFile(byte[] data) {
+    public Uri saveCameraFile(byte[] data) {
         File pictureFile = createCameraFile(true);
 
         if (pictureFile == null) {
             Log.d("Teste", "Error createing media file, check storege permission");
-            return;
+            return null;
         }
+
+        File outputMediaFile = null;
 
         try {
             FileOutputStream fos = new FileOutputStream(pictureFile);
@@ -219,17 +229,28 @@ public class MediaHelper {
             fos.close();
 
             Matrix matrix = new Matrix();
-            File outputMediaFile = createCameraFile(false);
+            outputMediaFile = createCameraFile(false);
+
             if (outputMediaFile == null) {
                 Log.d("Teste", "Error creating media file, check storage permissions");
-                return;
+                return null;
             }
 
+            Log.i("Teste", realImage.getWidth() + " x " + realImage.getHeight());
+            Bitmap result = Bitmap.createBitmap(realImage, 0, 0,
+                    realImage.getWidth(),
+                    realImage.getWidth(), matrix, true);
+
+            fos = new FileOutputStream(outputMediaFile);
+            result.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.d("Teste", e.getLocalizedMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d("Teste", e.getLocalizedMessage(), e);
         }
+        return Uri.fromFile(outputMediaFile);
     }
 
     private static Bitmap rotate(Bitmap bitmap, int degree) {
@@ -254,7 +275,7 @@ public class MediaHelper {
         }
 
         String timestemp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        return new File(mediaStoregeDir.getPath() + File.separator + (temp ? "TEMP_" : "IMG_" + timestemp + ".jpg"));
+        return new File(mediaStoregeDir.getPath() + File.separator + (temp ? "TEMP_" : "IMG_") + timestemp + ".jpg");
     }
 
     public interface OnImageCroppedListener {

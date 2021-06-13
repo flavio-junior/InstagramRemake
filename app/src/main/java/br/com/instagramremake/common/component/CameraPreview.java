@@ -1,4 +1,4 @@
-package br.com.instagramremake.main.camera.presentation;
+package br.com.instagramremake.common.component;
 
 import android.content.Context;
 import android.hardware.Camera;
@@ -28,7 +28,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 
     @Override
-    public void surfaceCreated(@NonNull SurfaceHolder holder) {
+    public void surfaceCreated(SurfaceHolder holder) {
         try {
             camera.setPreviewDisplay(holder);
             camera.startPreview();
@@ -38,7 +38,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         if (holder.getSurface() == null) return;
 
         try {
@@ -68,7 +68,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
+    public void surfaceDestroyed(SurfaceHolder holder) {
 
     }
 }

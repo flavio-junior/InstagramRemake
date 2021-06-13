@@ -1,6 +1,7 @@
 package br.com.instagramremake.main.camera.presentation;
 
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +13,9 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import br.com.instagramremake.R;
+import br.com.instagramremake.common.component.CameraPreview;
 import br.com.instagramremake.common.component.MediaHelper;
 import br.com.instagramremake.common.view.AbstractFragment;
 import butterknife.BindView;
@@ -36,9 +37,20 @@ public class CameraFragment extends AbstractFragment {
 
     private MediaHelper mediaHelper;
     private Camera camera;
+    private AddView addView;
 
     public CameraFragment() {
 
+    }
+
+    public static CameraFragment newInstance(AddView addView) {
+        CameraFragment cameraFragment = new CameraFragment();
+        cameraFragment.setAddView(addView);
+        return cameraFragment;
+    }
+
+    private void setAddView(AddView addView) {
+        this.addView = addView;
     }
 
     @Nullable
@@ -70,9 +82,11 @@ public class CameraFragment extends AbstractFragment {
         progressBar.setVisibility(View.VISIBLE);
         buttonCamera.setVisibility(View.GONE);
         camera.takePicture(null, null, (data, camera) -> {
-            mediaHelper.saveCameraFile(data);
             progressBar.setVisibility(View.GONE);
             buttonCamera.setVisibility(View.VISIBLE);
+            Uri uri = mediaHelper.saveCameraFile(data);
+            if (uri != null)
+                addView.onImageLoader(uri);
         });
     }
 
