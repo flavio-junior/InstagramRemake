@@ -4,6 +4,8 @@ import android.net.Uri;
 
 public interface AddView {
 
-    void onImageLoader(Uri uri);
+    void onImageLoaded(Uri uri);
+
+    void dispose();
 
 }

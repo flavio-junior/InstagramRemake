@@ -32,7 +32,7 @@ public class Database {
         feed = new HashMap<>();
         followers = new HashMap<>();
 
-       // init();
+       //init();
 
         //usersAuth.add(new UserAuth("user1@gmail.com", "12345"));
         //usersAuth.add(new UserAuth("user2@gmail.com", "123456"));

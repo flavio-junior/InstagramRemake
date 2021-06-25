@@ -86,7 +86,7 @@ public class CameraFragment extends AbstractFragment {
             buttonCamera.setVisibility(View.VISIBLE);
             Uri uri = mediaHelper.saveCameraFile(data);
             if (uri != null)
-                addView.onImageLoader(uri);
+                addView.onImageLoaded(uri);
         });
     }
 

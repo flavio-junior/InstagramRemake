@@ -19,6 +19,8 @@ import com.google.android.material.tabs.TabLayout;
 
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.view.AbstractActivity;
+import br.com.instagramremake.main.camera.datasource.GalleryDataSource;
+import br.com.instagramremake.main.camera.datasource.GalleryLocalDataSource;
 import butterknife.BindView;
 
 public class AddActivity extends AbstractActivity implements AddView {
@@ -35,7 +37,7 @@ public class AddActivity extends AbstractActivity implements AddView {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -52,7 +54,7 @@ public class AddActivity extends AbstractActivity implements AddView {
 
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
-            public void onTabSelected(@NonNull TabLayout.Tab tab) {
+            public void onTabSelected(TabLayout.Tab tab) {
                 super.onTabSelected(tab);
                 viewPager.setCurrentItem(tab.getPosition());
                 Log.d("Teste", "" + tab.getPosition());
@@ -60,12 +62,16 @@ public class AddActivity extends AbstractActivity implements AddView {
         });
     }
 
+
     @Override
     protected void onInject() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        GalleryFragment galleryFragment = new GalleryFragment();
+        GalleryDataSource galleryLocalDataSource = new GalleryLocalDataSource();
+        GalleryPresenter galleryPresenter = new GalleryPresenter(galleryLocalDataSource);
+
+        GalleryFragment galleryFragment = GalleryFragment.newInstance(this, galleryPresenter);
         adapter.add(galleryFragment);
 
         CameraFragment cameraFragment = CameraFragment.newInstance(this);
@@ -86,8 +92,13 @@ public class AddActivity extends AbstractActivity implements AddView {
     }
 
     @Override
-    public void onImageLoader(Uri uri) {
+    public void onImageLoaded(Uri uri) {
         AddCaptionActivity.launch(this, uri);
+        finish();
+    }
+
+    @Override
+    public void dispose() {
         finish();
     }
 
@@ -105,5 +116,4 @@ public class AddActivity extends AbstractActivity implements AddView {
     protected int getLayout() {
         return R.layout.activity_add;
     }
-
 }
