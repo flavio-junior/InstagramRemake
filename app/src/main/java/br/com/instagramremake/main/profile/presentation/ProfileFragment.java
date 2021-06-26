@@ -1,4 +1,4 @@
- package br.com.instagramremake.main.profile.presentation;
+package br.com.instagramremake.main.profile.presentation;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -16,7 +16,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +46,8 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     TextView txtFollowersCount;
     @BindView(R.id.profile_text_view_post_count)
     TextView txtPostsCount;
+    @BindView(R.id.profile_navigation_tabs)
+    BottomNavigationView bottomNavigationView;
 
     private PostAdapter postAdapter;
     private MainView mainView;
@@ -67,6 +72,18 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_profile_grid:
+                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                    return true;
+                case R.id.menu_profile_list:
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    return true;
+            }
+            return false;
+        });
     }
 
     @Override
