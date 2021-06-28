@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,6 +33,7 @@ import br.com.instagramremake.common.model.Post;
 import br.com.instagramremake.common.view.AbstractFragment;
 import br.com.instagramremake.main.presentation.MainView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends AbstractFragment<ProfilePresenter> implements MainView.ProfileView {
@@ -114,7 +116,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     @Override
     public void onResume() {
         super.onResume();
-        presenter.findUser(Database.getInstance().getUser().getUUID());
+        presenter.findUser();
     }
 
     @Override
@@ -126,6 +128,17 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_profile, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (!presenter.getUser().equals(Database.getInstance().getUser().getUUID()))
+                    mainView.disposeProfileDetail();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -142,7 +155,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
     }
 
     @Override
-    public void showData(String name, String following, String followers, String posts, boolean editProfile) {
+    public void showData(String name, String following, String followers, String posts, boolean editProfile, boolean follow) {
         txtUsername.setText(name);
         txtFollowersCount.setText(followers);
         txtFollowingCount.setText(following);
@@ -150,9 +163,16 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
         if (editProfile) {
             button.setText(R.string.edit_profile);
+        } else if (follow) {
+            button.setText(R.string.unfollow);
         } else {
             button.setText(R.string.follow);
         }
+    }
+
+    @OnClick(R.id.profile_button_edit_profile)
+    public void onButtonFollowClick() {
+        
     }
 
     @Override

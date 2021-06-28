@@ -40,7 +40,7 @@ public class Database {
         for (int i = 0; i < 30; i++) {
             email = "user" + i + "gmail.com";
             password = "1232";
-            name = "Tiago" + 1;
+            name = "Tiago" + i;
             init(email, password, name);
         }
 
@@ -94,17 +94,29 @@ public class Database {
         return this;
     }
 
-    public Database findUsers(String uuid, String query) {
+    public Database following(String uuidMe, String uuid) {
         timeout(() -> {
-            ArrayList<User> objects = new ArrayList<>();
-            for (User user : Database.users) {
-                if (!user.getUuid().equals(uuid) && user.getName().contains(query)) {
-                    users.add(user);
+            HashMap<String, HashSet<String>> followers = Database.followers;
+
+            HashSet<String> followersOfUser = followers.get(uuid);
+            if (followersOfUser == null)
+                followersOfUser = new HashSet<>();
+
+            boolean following = false;
+            for (String userUuid : followersOfUser) {
+                if (userUuid.equals(uuidMe)) {
+                    following = true;
+                    break;
                 }
             }
 
-            onSucessListener.onSucess(users);
-            onCompleteListener.onComplete();
+            if (onSucessListener != null)
+                onSucessListener.onSucess(following);
+            else if (onFailureListener != null)
+                onFailureListener.onFailure(new IllegalArgumentException("O usuário não foi encontrado"));
+
+            if (onCompleteListener != null)
+                onCompleteListener.onComplete();
         });
         return this;
     }
@@ -122,6 +134,21 @@ public class Database {
 
             if (onCompleteListener != null)
                 onCompleteListener.onComplete();
+        });
+        return this;
+    }
+
+    public Database findUsers(String uuid, String query) {
+        timeout(() -> {
+            ArrayList<User> users = new ArrayList<>();
+            for (User user : Database.users) {
+                if (!user.getUuid().equals(uuid) && user.getName().contains(query)) {
+                    users.add(user);
+                }
+            }
+
+            onSucessListener.onSucess(users);
+            onCompleteListener.onComplete();
         });
         return this;
     }

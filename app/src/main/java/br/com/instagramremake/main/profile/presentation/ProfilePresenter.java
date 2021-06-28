@@ -13,18 +13,27 @@ import br.com.instagramremake.main.profile.datasource.ProfileDataSource;
 public class ProfilePresenter implements Presenter<UserProfile> {
 
     private final ProfileDataSource datasource;
+    private final String user;
     private MainView.ProfileView view;
 
     public ProfilePresenter(ProfileDataSource dataSource) {
+        this(dataSource, Database.getInstance().getUser().getUUID());
+    }
+
+    public ProfilePresenter(ProfileDataSource dataSource, String user) {
         this.datasource = dataSource;
+        this.user = user;
     }
 
     public void setView(MainView.ProfileView view) {
         this.view = view;
     }
 
+    public String getUser() {
+        return user;
+    }
 
-    public void findUser(String user) {
+    public void findUser() {
         view.showProgressBar();
         datasource.findUser(user, this);
     }
@@ -42,7 +51,8 @@ public class ProfilePresenter implements Presenter<UserProfile> {
                 String.valueOf(user.getFollowing()),
                 String.valueOf(user.getFollowers()),
                 String.valueOf(user.getPosts()),
-                editProfile
+                editProfile,
+                userProfile.isFollowing()
         );
         view.showPosts(posts);
 
