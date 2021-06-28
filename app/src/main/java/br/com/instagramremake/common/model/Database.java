@@ -32,7 +32,19 @@ public class Database {
         feed = new HashMap<>();
         followers = new HashMap<>();
 
-       //init();
+        String email = "juniorFlavio@gmail.com";
+        String password = "12345";
+        String name = "Flávio Júnior";
+        init(email, password, name);
+
+        for (int i = 0; i < 30; i++) {
+            email = "user" + i + "gmail.com";
+            password = "1232";
+            name = "Tiago" + 1;
+            init(email, password, name);
+        }
+
+        //init();
 
         //usersAuth.add(new UserAuth("user1@gmail.com", "12345"));
         //usersAuth.add(new UserAuth("user2@gmail.com", "123456"));
@@ -50,12 +62,7 @@ public class Database {
         //return INSTANCE;
     }
 
-    public static void init() {
-
-        String email = "juniorFlavio@gmail.com";
-        String password = "12345";
-        String name = "Flávio Júnior";
-
+    public static void init(String email, String password, String name) {
         UserAuth userAuth = new UserAuth();
         userAuth.setEmail(email);
         userAuth.setPassword(password);
@@ -84,6 +91,21 @@ public class Database {
 
     public Database addOnCompleteListener(OnCompleteListener listener) {
         this.onCompleteListener = listener;
+        return this;
+    }
+
+    public Database findUsers(String uuid, String query) {
+        timeout(() -> {
+            ArrayList<User> objects = new ArrayList<>();
+            for (User user : Database.users) {
+                if (!user.getUuid().equals(uuid) && user.getName().contains(query)) {
+                    users.add(user);
+                }
+            }
+
+            onSucessListener.onSucess(users);
+            onCompleteListener.onComplete();
+        });
         return this;
     }
 
@@ -221,7 +243,7 @@ public class Database {
 
             if (onCompleteListener != null)
                 onCompleteListener.onComplete();
-            
+
         });
         return this;
     }

@@ -2,6 +2,7 @@ package br.com.instagramremake.main.profile.presentation;
 
 import java.util.List;
 
+import br.com.instagramremake.common.model.Database;
 import br.com.instagramremake.common.model.Post;
 import br.com.instagramremake.common.model.User;
 import br.com.instagramremake.common.model.UserProfile;
@@ -23,9 +24,9 @@ public class ProfilePresenter implements Presenter<UserProfile> {
     }
 
 
-    public void findUser() {
+    public void findUser(String user) {
         view.showProgressBar();
-        datasource.findUser(this);
+        datasource.findUser(user, this);
     }
 
     @Override
@@ -33,11 +34,15 @@ public class ProfilePresenter implements Presenter<UserProfile> {
         User user = userProfile.getUser();
         List<Post> posts = userProfile.getPosts();
 
+        boolean editProfile = user.getUuid().equals(Database.getInstance().getUser().getUUID());
+
+
         view.showData(
                 user.getName(),
                 String.valueOf(user.getFollowing()),
                 String.valueOf(user.getFollowers()),
-                String.valueOf(user.getPosts())
+                String.valueOf(user.getPosts()),
+                editProfile
         );
         view.showPosts(posts);
 

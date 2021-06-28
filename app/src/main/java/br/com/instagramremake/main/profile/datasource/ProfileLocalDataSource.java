@@ -11,13 +11,13 @@ import br.com.instagramremake.common.presenter.Presenter;
 public class ProfileLocalDataSource implements ProfileDataSource {
 
     @Override
-    public void findUser(Presenter<UserProfile> presenter) {
+    public void findUser(String user, Presenter<UserProfile> presenter) {
         Database db = Database.getInstance();
-        db.findUser(db.getUser().getUUID())
-                .addOnSucessListener((Database.OnSucessListener<User>) user -> {
-                    db.findPosts(user.getUuid())
+        db.findUser(user)
+                .addOnSucessListener((Database.OnSucessListener<User>) user1 -> {
+                    db.findPosts(user1.getUuid())
                             .addOnSucessListener((Database.OnSucessListener<List<Post>>) posts -> {
-                                presenter.onSucess(new UserProfile(user, posts));
+                                presenter.onSucess(new UserProfile(user1, posts));
                                 presenter.onComplete();
                             });
                 });

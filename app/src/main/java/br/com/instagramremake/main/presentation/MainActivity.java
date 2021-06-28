@@ -2,7 +2,6 @@ package br.com.instagramremake.main.presentation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
@@ -13,7 +12,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -21,10 +19,9 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import br.com.instagramremake.R;
+import br.com.instagramremake.common.model.Database;
 import br.com.instagramremake.common.view.AbstractActivity;
-import br.com.instagramremake.login.presentation.LoginActivity;
 import br.com.instagramremake.main.camera.presentation.AddActivity;
-import br.com.instagramremake.main.camera.presentation.CameraFragment;
 import br.com.instagramremake.main.home.datasource.HomeDataSource;
 import br.com.instagramremake.main.home.datasource.HomeLocalDataSource;
 import br.com.instagramremake.main.home.presentation.HomeFragment;
@@ -33,8 +30,10 @@ import br.com.instagramremake.main.profile.datasource.ProfileDataSource;
 import br.com.instagramremake.main.profile.datasource.ProfileLocalDataSource;
 import br.com.instagramremake.main.profile.presentation.ProfileFragment;
 import br.com.instagramremake.main.profile.presentation.ProfilePresenter;
+import br.com.instagramremake.main.search.datasource.SearchDataSource;
+import br.com.instagramremake.main.search.datasource.SearchLocalDataSource;
 import br.com.instagramremake.main.search.presentation.SearchFragment;
-import br.com.instagramremake.register.presentation.RegisterActivity;
+import br.com.instagramremake.main.search.presentation.SearchPresenter;
 
 public class MainActivity extends AbstractActivity implements BottomNavigationView.OnNavigationItemSelectedListener, MainView {
 
@@ -42,8 +41,9 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     public static final int LOGIN_ACTIVITY = 0;
     public static final int REGISTER_ACTIVITY = 1;
 
-    private ProfilePresenter profilePresenter;
     private HomePresenter homePresenter;
+    private SearchPresenter searchPresenter;
+    private ProfilePresenter profilePresenter;
 
     Fragment homeFragment;
     Fragment searchFragment;
@@ -87,8 +87,11 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         homeFragment = HomeFragment.newInstance(this, homePresenter);
         profileFragment = ProfileFragment.newInstance(this, profilePresenter);
 
-        searchFragment = new SearchFragment();
-        //cameraFragment = new CameraFragment();
+        SearchDataSource searchDataSource = new SearchLocalDataSource();
+        searchPresenter = new SearchPresenter(searchDataSource);
+
+//    cameraFragment = new CameraFragment();
+        searchFragment = SearchFragment.newInstance(this, searchPresenter);
 
         active = homeFragment;
 
@@ -123,7 +126,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
                 getSupportFragmentManager().beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
                 scrollToolbarEnabled(true);
-                profilePresenter.findUser();
+                profilePresenter.findUser(Database.getInstance().getUser().getUUID());
             }
         }
     }
@@ -148,6 +151,14 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     }
 
     @Override
+    public void showProfile(String user) {
+        getSupportFragmentManager().beginTransaction().hide(active).show(profileFragment).commit();
+        active = profileFragment;
+        scrollToolbarEnabled(true);
+        profilePresenter.findUser(user);
+    }
+
+    @Override
     protected int getLayout() {
         return R.layout.activity_main;
     }
@@ -166,18 +177,19 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_botton_search:
                 fm.beginTransaction().hide(active).show(searchFragment).commit();
                 active = searchFragment;
+                scrollToolbarEnabled(false);
                 return true;
 
             case R.id.menu_botton_add:
-               // fm.beginTransaction().hide(active).show(cameraFragment).commit();
-               // active = cameraFragment;
+                // fm.beginTransaction().hide(active).show(cameraFragment).commit();
+                // active = cameraFragment;
                 AddActivity.launch(this);
                 return true;
 
             case R.id.menu_botton_profile:
                 fm.beginTransaction().hide(active).show(profileFragment).commit();
                 active = profileFragment;
-                profilePresenter.findUser();
+                profilePresenter.findUser(Database.getInstance().getUser().getUUID());
                 scrollToolbarEnabled(true);
                 return true;
         }

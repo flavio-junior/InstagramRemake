@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,9 +21,7 @@ import br.com.instagramremake.R;
 import br.com.instagramremake.common.model.Feed;
 import br.com.instagramremake.common.model.User;
 import br.com.instagramremake.common.view.AbstractFragment;
-import br.com.instagramremake.main.presentation.MainActivity;
 import br.com.instagramremake.main.presentation.MainView;
-import br.com.instagramremake.main.profile.presentation.ProfileFragment;
 import butterknife.BindView;
 
 public class HomeFragment extends AbstractFragment<HomePresenter> implements MainView.HomeView {
@@ -104,7 +100,7 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private static class PostViewHolder extends RecyclerView.ViewHolder {
+    private class PostViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView imagePost;
         private final ImageView imageUser;

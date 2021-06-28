@@ -5,6 +5,6 @@ import br.com.instagramremake.common.presenter.Presenter;
 
 public interface ProfileDataSource {
 
-    void findUser(Presenter<UserProfile> presenter);
+    void findUser(String user, Presenter<UserProfile> presenter);
 
 }
