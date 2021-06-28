@@ -38,6 +38,13 @@ public class ProfilePresenter implements Presenter<UserProfile> {
         datasource.findUser(user, this);
     }
 
+    public void follow(boolean follow) {
+        if(follow)
+            datasource.follow(user);
+        else
+            datasource.unfollow(user);
+    }
+
     @Override
     public void onSucess(UserProfile userProfile) {
         User user = userProfile.getUser();
