@@ -24,6 +24,7 @@ import br.com.instagramremake.common.model.Database;
 import br.com.instagramremake.common.view.AbstractActivity;
 import br.com.instagramremake.main.camera.presentation.AddActivity;
 import br.com.instagramremake.main.home.datasource.HomeDataSource;
+import br.com.instagramremake.main.home.datasource.HomeFireDataSource;
 import br.com.instagramremake.main.home.datasource.HomeLocalDataSource;
 import br.com.instagramremake.main.home.presentation.HomeFragment;
 import br.com.instagramremake.main.home.presentation.HomePresenter;
@@ -81,7 +82,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     protected void onInject() {
-        HomeDataSource homeDataSource = new HomeLocalDataSource();
+        HomeDataSource homeDataSource = new HomeFireDataSource();
         ProfileDataSource profileDataSource = new ProfileLocalDataSource();
 
         homePresenter = new HomePresenter(homeDataSource);
