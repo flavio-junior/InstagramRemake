@@ -34,6 +34,7 @@ import br.com.instagramremake.main.profile.datasource.ProfileLocalDataSource;
 import br.com.instagramremake.main.profile.presentation.ProfileFragment;
 import br.com.instagramremake.main.profile.presentation.ProfilePresenter;
 import br.com.instagramremake.main.search.datasource.SearchDataSource;
+import br.com.instagramremake.main.search.datasource.SearchFireDataSource;
 import br.com.instagramremake.main.search.datasource.SearchLocalDataSource;
 import br.com.instagramremake.main.search.presentation.SearchFragment;
 import br.com.instagramremake.main.search.presentation.SearchPresenter;
@@ -92,7 +93,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
         homeFragment = HomeFragment.newInstance(this, homePresenter);
         profileFragment = ProfileFragment.newInstance(this, profilePresenter);
 
-        SearchDataSource searchDataSource = new SearchLocalDataSource();
+        SearchDataSource searchDataSource = new SearchFireDataSource();
         searchPresenter = new SearchPresenter(searchDataSource);
 
 //    cameraFragment = new CameraFragment();
