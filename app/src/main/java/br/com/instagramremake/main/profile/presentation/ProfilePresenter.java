@@ -1,5 +1,7 @@
 package br.com.instagramremake.main.profile.presentation;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 
 import br.com.instagramremake.common.model.Database;
@@ -17,7 +19,7 @@ public class ProfilePresenter implements Presenter<UserProfile> {
     private MainView.ProfileView view;
 
     public ProfilePresenter(ProfileDataSource dataSource) {
-        this(dataSource, Database.getInstance().getUser().getUUID());
+        this(dataSource, FirebaseAuth.getInstance().getUid());
     }
 
     public ProfilePresenter(ProfileDataSource dataSource, String user) {
@@ -39,7 +41,7 @@ public class ProfilePresenter implements Presenter<UserProfile> {
     }
 
     public void follow(boolean follow) {
-        if(follow)
+        if (follow)
             datasource.follow(user);
         else
             datasource.unfollow(user);
@@ -50,8 +52,7 @@ public class ProfilePresenter implements Presenter<UserProfile> {
         User user = userProfile.getUser();
         List<Post> posts = userProfile.getPosts();
 
-        boolean editProfile = user.getUuid().equals(Database.getInstance().getUser().getUUID());
-
+        boolean editProfile = user.getUuid().equals(FirebaseAuth.getInstance().getUid());
 
         view.showData(
                 user.getName(),
@@ -63,8 +64,8 @@ public class ProfilePresenter implements Presenter<UserProfile> {
         );
         view.showPosts(posts);
 
-        if (user.getUri() != null)
-            view.showPhoto(user.getUri());
+        if (user.getPhotoUrl() != null)
+            view.showPhoto(user.getPhotoUrl());
     }
 
     @Override

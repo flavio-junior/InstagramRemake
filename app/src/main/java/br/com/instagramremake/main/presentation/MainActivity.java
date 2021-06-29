@@ -29,6 +29,7 @@ import br.com.instagramremake.main.home.datasource.HomeLocalDataSource;
 import br.com.instagramremake.main.home.presentation.HomeFragment;
 import br.com.instagramremake.main.home.presentation.HomePresenter;
 import br.com.instagramremake.main.profile.datasource.ProfileDataSource;
+import br.com.instagramremake.main.profile.datasource.ProfileFireDataSource;
 import br.com.instagramremake.main.profile.datasource.ProfileLocalDataSource;
 import br.com.instagramremake.main.profile.presentation.ProfileFragment;
 import br.com.instagramremake.main.profile.presentation.ProfilePresenter;
@@ -83,7 +84,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     @Override
     protected void onInject() {
         HomeDataSource homeDataSource = new HomeFireDataSource();
-        ProfileDataSource profileDataSource = new ProfileLocalDataSource();
+        ProfileDataSource profileDataSource = new ProfileFireDataSource();
 
         homePresenter = new HomePresenter(homeDataSource);
         profilePresenter = new ProfilePresenter(profileDataSource);
@@ -156,7 +157,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     public void showProfile(String user) {
-        ProfileDataSource profileDataSource = new ProfileLocalDataSource();
+        ProfileDataSource profileDataSource = new ProfileFireDataSource();
         ProfilePresenter profilePresenter = new ProfilePresenter(profileDataSource, user);
 
         profileDetailFragment = ProfileFragment.newInstance(this, profilePresenter);
