@@ -2,13 +2,15 @@ package br.com.instagramremake.login.presentation;
 
 import android.os.Handler;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.model.UserAuth;
 import br.com.instagramremake.common.presenter.Presenter;
 import br.com.instagramremake.common.util.Strings;
 import br.com.instagramremake.login.datasource.LoginDataSource;
 
-class LoginPresenter implements Presenter<UserAuth> {
+class LoginPresenter implements Presenter<FirebaseUser> {
 
     private final LoginView view;
     private final LoginDataSource dataSource;
@@ -28,7 +30,7 @@ class LoginPresenter implements Presenter<UserAuth> {
     }
 
     @Override
-    public void onSuccess(UserAuth userAuth) {
+    public void onSuccess(FirebaseUser userAuth) {
         view.onUserLogged();
     }
 
