@@ -12,7 +12,7 @@ public class HomeLocalDataSource implements HomeDataSource {
     public void findFeed(Presenter<List<Feed>> presenter) {
         Database db = Database.getInstance();
         db.findFeed(db.getUser().getUUID())
-                .addOnSucessListener(presenter::onSucess)
+                .addOnSucessListener(presenter::onSuccess)
                 .addOnFailureListener(e -> presenter.onError(e.getMessage()))
                 .addOnCompleteListener(presenter::onComplete);
     }

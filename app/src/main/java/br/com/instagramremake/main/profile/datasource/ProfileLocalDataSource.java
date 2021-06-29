@@ -19,7 +19,7 @@ public class ProfileLocalDataSource implements ProfileDataSource {
                             .addOnSucessListener((Database.OnSucessListener<List<Post>>) posts -> {
                                 db.following(db.getUser().getUUID(), uuid)
                                         .addOnSucessListener((Database.OnSucessListener<Boolean>) following -> {
-                                            presenter.onSucess(new UserProfile(user1, posts, following));
+                                            presenter.onSuccess(new UserProfile(user1, posts, following));
                                             presenter.onComplete();
                                         });
                             });

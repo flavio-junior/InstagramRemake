@@ -25,7 +25,7 @@ public class SearchPresenter implements Presenter<List<User>> {
     }
 
     @Override
-    public void onSucess(List<User> response) {
+    public void onSuccess(List<User> response) {
         view.showUsers(response);
     }
 

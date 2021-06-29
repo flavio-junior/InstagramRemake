@@ -12,7 +12,7 @@ public class SearchLocalDataSource implements SearchDataSource {
     public void findUser(String query, Presenter<List<User>> presenter) {
         Database db = Database.getInstance();
         db.findUsers(db.getUser().getUUID(), query)
-                .addOnSucessListener(presenter::onSucess)
+                .addOnSucessListener(presenter::onSuccess)
                 .addOnFailureListener(e -> presenter.onError(e.getMessage()))
                 .addOnCompleteListener(presenter::onComplete);
     }

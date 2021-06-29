@@ -11,7 +11,7 @@ public class AddLocalDataSource implements AddDataSource {
     public void savePost(Uri uri, String caption, Presenter presenter) {
         Database db = Database.getInstance();
         db.createPost(db.getUser().getUUID(), uri, caption)
-                .addOnSucessListener((Database.OnSucessListener<Void>) presenter::onSucess)
+                .addOnSucessListener((Database.OnSucessListener<Void>) presenter::onSuccess)
                 .addOnFailureListener(e -> presenter.onError(e.getMessage()))
                 .addOnCompleteListener(presenter::onComplete);
     }

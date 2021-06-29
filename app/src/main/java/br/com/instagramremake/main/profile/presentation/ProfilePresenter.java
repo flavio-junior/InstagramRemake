@@ -46,7 +46,7 @@ public class ProfilePresenter implements Presenter<UserProfile> {
     }
 
     @Override
-    public void onSucess(UserProfile userProfile) {
+    public void onSuccess(UserProfile userProfile) {
         User user = userProfile.getUser();
         List<Post> posts = userProfile.getPosts();
 

@@ -2,13 +2,15 @@ package br.com.instagramremake.register.presentation;
 
 import android.net.Uri;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.model.UserAuth;
 import br.com.instagramremake.common.presenter.Presenter;
 import br.com.instagramremake.common.util.Strings;
 import br.com.instagramremake.register.datasource.RegisterDataSource;
 
-public class RegisterPresenter implements Presenter<UserAuth> {
+public class RegisterPresenter implements Presenter<FirebaseUser> {
 
     private RegisterView registerView;
     private RegisterView.EmailView emailView;
@@ -58,7 +60,7 @@ public class RegisterPresenter implements Presenter<UserAuth> {
         this.name = name;
 
         namePasswordView.showProgressBar();
-        datasource.createUser(name, email, password, this);
+        datasource.createUser(name.toLowerCase(), email, password, this);
     }
 
     public String getName() {
@@ -91,7 +93,7 @@ public class RegisterPresenter implements Presenter<UserAuth> {
     }
 
     @Override
-    public void onSucess(UserAuth response) {
+    public void onSuccess(FirebaseUser response) {
         registerView.showNextView(RegisterSteps.WELCOME);
     }
 
@@ -108,7 +110,7 @@ public class RegisterPresenter implements Presenter<UserAuth> {
     private class updatePhotoCallBack implements Presenter<Boolean> {
 
         @Override
-        public void onSucess(Boolean response) {
+        public void onSuccess(Boolean response) {
             registerView.onUserCreated();
         }
 

@@ -21,7 +21,7 @@ public class AddPresenter implements Presenter<Void> {
     }
 
     @Override
-    public void onSucess(Void response) {
+    public void onSuccess(Void response) {
         view.postSave();
     }
 

@@ -2,7 +2,7 @@ package br.com.instagramremake.common.presenter;
 
 public interface Presenter<T> {
 
-    void onSucess(T response);
+    void onSuccess(T response);
 
     void onError(String message);
 

@@ -25,6 +25,7 @@ import br.com.instagramremake.common.component.MediaHelper;
 import br.com.instagramremake.common.view.AbstractActivity;
 import br.com.instagramremake.main.presentation.MainActivity;
 import br.com.instagramremake.register.datasource.RegisterDataSource;
+import br.com.instagramremake.register.datasource.RegisterFireDataSource;
 import br.com.instagramremake.register.datasource.RegisterLocalDataSource;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -63,7 +64,7 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 
     @Override
     protected void onInject() {
-        RegisterDataSource dataSource = new RegisterLocalDataSource();
+        RegisterDataSource dataSource = new RegisterFireDataSource();
         presenter = new RegisterPresenter(dataSource);
         presenter.setRegisterView(this);
 

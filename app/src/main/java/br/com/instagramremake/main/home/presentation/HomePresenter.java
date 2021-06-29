@@ -28,7 +28,7 @@ public class HomePresenter implements Presenter<List<Feed>> {
     }
 
     @Override
-    public void onSucess(List<Feed> response) {
+    public void onSuccess(List<Feed> response) {
         view.showFeed(response);
     }
 

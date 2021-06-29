@@ -49,6 +49,6 @@ public class GalleryLocalDataSource implements GalleryDataSource {
         }
 
         if (images != null && !images.isEmpty())
-            presenter.onSucess(images);
+            presenter.onSuccess(images);
     }
 }

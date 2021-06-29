@@ -32,7 +32,7 @@ public class Database {
         feed = new HashMap<>();
         followers = new HashMap<>();
 
-        String email = "juniorFlavio@gmail.com";
+        /*String email = "juniorFlavio@gmail.com";
         String password = "12345";
         String name = "Flávio Júnior";
         init(email, password, name);
@@ -42,7 +42,7 @@ public class Database {
             password = "1232";
             name = "Tiago" + i;
             init(email, password, name);
-        }
+        }*/
 
         //init();
 

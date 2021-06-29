@@ -28,7 +28,7 @@ public class GalleryPresenter implements Presenter<List<String>> {
     }
 
     @Override
-    public void onSucess(List<String> response) {
+    public void onSuccess(List<String> response) {
         ArrayList<Uri> uris = new ArrayList<>();
         for (String res : response) {
             Uri uri = Uri.parse(res);
