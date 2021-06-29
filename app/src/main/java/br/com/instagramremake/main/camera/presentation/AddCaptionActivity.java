@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import br.com.instagramremake.R;
 import br.com.instagramremake.common.view.AbstractActivity;
+import br.com.instagramremake.main.camera.datasource.AddFireDataSource;
 import br.com.instagramremake.main.camera.datasource.AddLocalDataSource;
 import butterknife.BindView;
 
@@ -28,6 +29,9 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
 
     @BindView(R.id.main_add_caption_edit_text)
     EditText editText;
+
+    @BindView(R.id.add_progress)
+    ProgressBar progressBar;
 
     private Uri uri;
     private AddPresenter presenter;
@@ -61,8 +65,18 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
         uri = getIntent().getExtras().getParcelable("uri");
         imageView.setImageURI(uri);
 
-        AddLocalDataSource dataSource = new AddLocalDataSource();
+        AddFireDataSource dataSource = new AddFireDataSource();
         presenter = new AddPresenter(this, dataSource);
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -84,7 +98,6 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
                 return true;
             case R.id.action_share:
                 presenter.createPost(uri, editText.getText().toString());
-                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -92,6 +105,6 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
 
     @Override
     public void postSave() {
-        // TODO: 6/12/2021
+        finish();
     }
 }

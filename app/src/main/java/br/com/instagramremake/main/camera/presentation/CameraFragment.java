@@ -61,13 +61,20 @@ public class CameraFragment extends AbstractFragment {
         if (getContext() != null) {
             mediaHelper = MediaHelper.getInstance(this);
             if (mediaHelper.checkCameraHardware(getContext())) {
-                camera = mediaHelper.getCameraInstance();
-                CameraPreview cameraPreview = new CameraPreview(getContext(), camera);
-                frameLayout.addView(cameraPreview);
+                camera = mediaHelper.getCameraInstance(this, getContext());
+                if (camera != null) {
+                    CameraPreview cameraPreview = new CameraPreview(getContext(), camera);
+                    frameLayout.addView(cameraPreview);
+                }
             }
         }
 
         return view;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        addView.dispose();
     }
 
     @Override
@@ -84,7 +91,7 @@ public class CameraFragment extends AbstractFragment {
         camera.takePicture(null, null, (data, camera) -> {
             progressBar.setVisibility(View.GONE);
             buttonCamera.setVisibility(View.VISIBLE);
-            Uri uri = mediaHelper.saveCameraFile(data);
+            Uri uri = mediaHelper.saveCameraFile(getContext(), data);
             if (uri != null)
                 addView.onImageLoaded(uri);
         });

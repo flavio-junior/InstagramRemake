@@ -1,7 +1,5 @@
 package br.com.instagramremake.main.presentation;
 
-import android.net.Uri;
-
 import java.util.List;
 
 import br.com.instagramremake.common.model.Feed;
@@ -16,6 +14,8 @@ public interface MainView extends View {
     void showProfile(String user);
 
     void disposeProfileDetail();
+
+    void logout();
 
     public interface ProfileView extends View {
 

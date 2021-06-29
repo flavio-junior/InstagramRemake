@@ -105,6 +105,13 @@ public class MediaHelper {
     }
 
     public void chooserCamera() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                getContext() != null &&
+                getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            activity.requestPermissions(new String[]{Manifest.permission.CAMERA}, CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE);
+            return;
+        }
+
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (i.resolveActivity(getContext().getPackageManager()) != null) {
             File photoFile = null;
@@ -179,25 +186,23 @@ public class MediaHelper {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
     }
 
-    public Camera getCameraInstance() {
+    public Camera getCameraInstance(Fragment fragment, Context context) {
         Camera camera = null;
-
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getContext() != null && getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                if (activity != null)
-                    activity.requestPermissions(new String[]{Manifest.permission.CAMERA}, 300);
-                else
-                    fragment.requestPermissions(new String[]{Manifest.permission.CAMERA}, 300);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                    && fragment != null
+                    && context.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                fragment.requestPermissions(new String[]{Manifest.permission.CAMERA}, 300);
+                return null;
             }
             camera = Camera.open();
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return camera;
     }
 
-    public Uri saveCameraFile(byte[] data) {
-        File pictureFile = createCameraFile(true);
+    public Uri saveCameraFile(Context context, byte[] data) {
+        File pictureFile = createCameraFile(context, true);
 
         if (pictureFile == null) {
             Log.d("Teste", "Error createing media file, check storege permission");
@@ -229,7 +234,7 @@ public class MediaHelper {
             fos.close();
 
             Matrix matrix = new Matrix();
-            outputMediaFile = createCameraFile(false);
+            outputMediaFile = createCameraFile(context, false);
 
             if (outputMediaFile == null) {
                 Log.d("Teste", "Error creating media file, check storage permissions");
@@ -263,10 +268,10 @@ public class MediaHelper {
         return Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
     }
 
-    private File createCameraFile(boolean temp) {
+    private File createCameraFile(Context context, boolean temp) {
         if (getContext() == null) return null;
 
-        File mediaStoregeDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File mediaStoregeDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (mediaStoregeDir != null && !mediaStoregeDir.exists()) {
             if (!mediaStoregeDir.mkdir()) {
                 Log.d("Teste", "failed to create directory");
